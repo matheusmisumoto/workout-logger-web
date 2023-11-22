@@ -13,11 +13,11 @@ export default function Dashboard() {
             <Header />
             <Main>
                 <div className="p-6 flex-1">
-                    <h2 className="my-4 text-3xl font-bold max-w-screen-lg mx-auto">Últimos treinos</h2>
-                    <Card title="Treino Saiyajin 1 - Dia D" subtitle="Posterior, Quadríceps" time={90} weight={8000} link="/workout" />
-                    <Card title="Treino Saiyajin 1 - Dia C" subtitle="Dorsais, Bíceps, Ombros, Peitoral" time={90} weight={12000} />
-                    <Card title="Treino Saiyajin 1 - Dia B" subtitle="Posterior, Quadríceps, Adutor, Abdutor" time={100} weight={5390} />
-                    <Card title="Treino Saiyajin 1 - Dia A" subtitle="Peito, Tríceps, Ombros, Dorsais" time={60} weight={9000} />
+                    <h2 className="my-4 text-3xl font-bold max-w-screen-md mx-auto">Últimos treinos</h2>
+                    <Card title="Treino Saiyajin 1 - Dia D" subtitle="Posterior, Quadríceps" exercises={7} time={90} weight={8000} link="/workout" />
+                    <Card title="Treino Saiyajin 1 - Dia C" subtitle="Dorsais, Bíceps, Ombros, Peitoral" exercises={6} time={90} weight={12000} />
+                    <Card title="Treino Saiyajin 1 - Dia B" subtitle="Posterior, Quadríceps, Adutor, Abdutor" exercises={8} time={100} weight={5390} />
+                    <Card title="Treino Saiyajin 1 - Dia A" subtitle="Peito, Tríceps, Ombros, Dorsais" exercises={7} time={60} weight={9000} />
                 </div>
             </Main>
             <Footer />

@@ -21,6 +21,7 @@ const config: Config = {
       'secondary': '#192f4d',
       'mobile-nav': '#121212',
       'card': '#333333',
+      'destructive': '#dc2626'
     }
   },
   plugins: [],

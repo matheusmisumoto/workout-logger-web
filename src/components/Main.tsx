@@ -6,7 +6,7 @@ type MainProps = {
 
 export default function Main({ children }: MainProps) {
     return (
-        <main className="bg-black text-white flex-1 overflow-x-hidden">
+        <main className="bg-black text-white flex-1 flex flex-col overflow-x-hidden">
             {children}
         </main>
     )

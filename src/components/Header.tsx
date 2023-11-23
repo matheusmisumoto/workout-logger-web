@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { Logo } from "./Logo";
+import { Logo } from "./icons/Logo";
 import BackIcon from "./icons/BackIcon";
 
-export default function Header(props: { navigationURL?: string, navigationTitle?: string }) {
+export default function Header(props: { navigationURL?: string, navigationTitle?: string, actionURL?: string, actionTitle?: string }) {
     return (
         <header className="px-1 h-12 bg-primary text-white">
             <div className="flex justify-between max-w-screen-md mx-auto gap-8">
@@ -21,8 +21,14 @@ export default function Header(props: { navigationURL?: string, navigationTitle?
                     <Logo className="w-auto h-4 fill-[white]" />
                 </Link>
                 </div>
-                <div className="flex flex-1 flex-col justify-center h-12">
-
+                <div className="flex flex-1 flex-col justify-center h-12 text-right">
+                { props.actionURL ?
+                    <div>
+                        <Link href={props.actionURL} className="pr-4 py-4">
+                            {props.actionTitle}
+                        </Link>
+                    </div>
+                : ''  }
                 </div>
             </div>
         </header>

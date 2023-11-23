@@ -2,7 +2,7 @@ import Link from "next/link"
 import FowardIcon from "./icons/ForwardIcon"
 import link from "next/link"
 
-export default function MenuLink(props: { link: string, title?: string }){
+export default function MenuLink(props: { link: string, title?: string, subtitle?: string }){
     let target;
 
     if(/(http(s?)):\/\//i.test(props.link)){
@@ -10,9 +10,14 @@ export default function MenuLink(props: { link: string, title?: string }){
     }
 
     return(
-        <Link href={props.link!} target={target} className="px-4 py-3 max-w-screen-md text-white/90">
-            {props.title}
-            <FowardIcon className="w-5 fill-white/25 float-right" />
+        <Link href={props.link!} target={target} className="px-4 py-3 max-w-screen-md text-white/90 flex gap-2 justify-center items-center">
+            <div className="flex-1">
+                {props.title}
+                { props.subtitle ? <span className="block text-xs text-white/50">{props.subtitle}</span> : ''}
+            </div>
+            <div>
+                <FowardIcon className="w-5 fill-white/25 float-right" />
+            </div>        
         </Link>
     )
 }

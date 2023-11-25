@@ -1,5 +1,6 @@
 {
     "name": "FITLogr",
     "short_name": "FITLogr",
-    "display": "standalone"
+    "display": "standalone",
+    "orientation": "portrait"
 }

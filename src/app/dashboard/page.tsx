@@ -4,11 +4,7 @@ import Card from "@/components/Card";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
-import { Logo } from "@/components/icons/Logo";
 import Main from "@/components/Main";
-import HistoryIcon from "@/components/icons/HistoryIcon";
-import ProfileIcon from "@/components/icons/ProfileIcon";
-import WorkoutIcon from "@/components/icons/WorkoutIcon";
 import MainContent from "@/components/MainContent";
 
 export default function Dashboard() {
@@ -26,8 +22,8 @@ export default function Dashboard() {
                         </span>
                     </h1>
                     <Box>
-                        <BoxItem data="500" description="treinos registrados" />                        
-                        <BoxItem data="5.700.000 kg" description="carga total levantada" />                        
+                        <BoxItem data="0" description="treinos registrados" />                        
+                        <BoxItem data="0" description="carga total levantada" />                        
                     </Box>
                 </Hero>
                 <MainContent>

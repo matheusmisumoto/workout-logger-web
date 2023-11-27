@@ -1,123 +1,164 @@
+'use client'
+
 import Button from "@/components/Button"
-import Footer from "@/components/Footer"
-import FooterTracking from "@/components/FooterTracking"
+import ExerciseHeader from "@/components/ExerciseHeader"
 import Header from "@/components/Header"
 import Main from "@/components/Main"
 import MainContent from "@/components/MainContent"
-import RemoveIcon from "@/components/icons/RemoveIcon"
+import SetRow from "@/components/SetRow"
 import Link from "next/link"
+import { useState, useEffect, Fragment } from "react"
+
+interface Sets {
+    type: string,
+    weight: number | undefined,
+    reps: number | undefined
+}
+interface Exercise {
+    id: string | undefined,
+    name: string,
+    target: string,
+    equipment: string,
+    sets: Sets[]
+}
+interface Workout {
+    id: string | undefined,
+    name: string,
+    exercises: Exercise[]
+}
 
 export default function Track(){
+
+    const [workout, setWorkout] = useState<Workout>()
+
+    useEffect(() => {
+        localStorage.setItem('workout', JSON.stringify(workout));
+    }, [workout]);
+
+    useEffect(() => {
+       
+        const initial: Workout = {
+            id: '3da69246-f18f-4303-b438-cc22863fb17e',
+            name: '',
+            exercises: [
+                {
+                    id: 'aeuhraurhur',
+                    name: 'Teste',
+                    target: 'Bíceps',
+                    equipment: 'Máquina',
+                    sets: [
+                        {
+                            type: 'STANDARD',
+                            weight: 50,
+                            reps: 10
+                        },
+                        {
+                            type: 'STANDARD',
+                            weight: 60,
+                            reps: 10
+                        },
+                        {
+                            type: 'STANDARD',
+                            weight: 70,
+                            reps: 10
+                        },
+                        {
+                            type: 'STANDARD',
+                            weight: 80,
+                            reps: 10
+                        },
+                        {
+                            type: 'REST_PAUSE',
+                            weight: 50,
+                            reps: 10
+                        }
+                    ]
+                }
+            ]
+        }
+
+        setWorkout(initial);
+    }, []);
+
+    function deleteSet(indexExercise: number, indexSet: number) {
+        if (workout && workout.exercises && workout.exercises[indexExercise].sets) {
+            const newWorkout = { ...workout };
+            newWorkout.exercises[indexExercise].sets.splice(indexSet, 1);
+
+            if(newWorkout.exercises[indexExercise].sets.length === 0) {
+                newWorkout.exercises.splice(indexExercise, 1);
+            }
+
+            setWorkout(newWorkout);
+        }
+    }
+
+    function addSet(indexExercise: number) {
+        if (workout && workout.exercises && workout.exercises[indexExercise].sets) {
+            const newWorkout = { ...workout };
+            newWorkout.exercises[indexExercise].sets.push({
+                type: 'Standard',
+                weight: 0,
+                reps: 0
+            });
+            setWorkout(newWorkout);
+        }
+    }
+
+    function addExercise() {
+        if (workout) {
+            const newWorkout = { ...workout };
+            newWorkout.exercises.push({
+                id: '',
+                name: 'Teste 2',
+                target: 'Tríceps',
+                equipment: 'Dumbbells',
+                sets: [
+                    {
+                        type: 'STANDARD',
+                        weight: 0,
+                        reps: 0
+                    }
+                ]
+            });
+            setWorkout(newWorkout);
+        }
+    }
+
     return (
     <div className="h-screen flex flex-col">
         <Header navigationTitle="Voltar" navigationURL="/workout/new" actionTitle="Finalizar" actionURL="#" />
         <Main>
             <MainContent>
-                <div className="max-w-screen-md mx-auto pb-8 mb-8 border-b border-white/50">
-                    <div className="mb-6">
-                        <h3 className="my-1 text-xl font-bold">Alternate Bicep Curl</h3>
-                        <p className="text-[.75rem]"><strong>Alvo: </strong>Tríceps</p>
-                        <p className="text-[.75rem]"><strong>Equipamento: </strong>Dumbbell</p>
-                    </div>
-                    <table className="w-full text-sm">
-                        <tbody>
-                            <tr>
-                                <td><span className="rounded-full bg-primary/75 py-1 px-2 text-[.75rem]">1</span></td>
-                                <td className="w-3/12">
-                                    <select className="text-sm bg-black py-1 px-2 w-28 inline-block rounded-none">
-                                        <option>Standard</option>
-                                        <option>Drop</option>
-                                        <option>Rest-Pause</option>
-                                        <option>Standard</option>
-                                    </select>
-                                </td>
-                                <td className="w-4/12 text-right"><input type="number" name="test" inputMode="decimal" className="text-sm text-right bg-white/10 mr-2 py-1 px-2 w-12 inline align-middle" />kg</td>
-                                <td className="w-1/12 text-center text-white/50">X</td>
-                                <td className="w-4/12 text-center"><input type="number" inputMode="numeric" className="text-sm bg-white/10 mr-2 py-1 px-1 w-8 align-middle" />reps</td>
-                                <td className="w-1/12 text-center pl-2"><RemoveIcon className="h-4 w-auto fill-destructive" /></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <Link href="#" className="text-xs mt-4 mb-2 py-3 px-2 rounded-md bg-white/20 block text-center">Adicionar set</Link>
-                    <div className="flex justify-between gap-2 text-center">
-                        <Link href="#" className="flex-1 text-xs py-3 px-2 rounded-md bg-white/20">Estatísticas anteriores</Link>
-                        
-                    </div>
-                </div>
-
-                <div className="max-w-screen-md mx-auto pb-8 mb-8 border-b border-white/50">
-                    <div className="mb-6">
-                        <h3 className="my-1 text-xl font-bold">Alternate Bicep Curl</h3>
-                        <p className="text-[.75rem]"><strong>Alvo: </strong>Tríceps</p>
-                        <p className="text-[.75rem]"><strong>Equipamento: </strong>Dumbbell</p>
-                    </div>
-                    <div className="flex justify-between gap-2 text-center mb-4 py-2 px-4 rounded-lg bg-secondary text-sm">
-                        <div>
-                            <select className="text-sm text-right bg-black py-1 px-2 w-28 inline-block rounded-none">
-                                <option>Standard</option>
-                                <option>Drop</option>
-                                <option>Rest-Pause</option>
-                                <option>Standard</option>
-                            </select>
+            { workout?.exercises?.map((exercise, indexExercise) => {
+                    return (
+                        <div key={indexExercise} className="max-w-screen-md mx-auto pb-8 mb-8 border-b border-white/50">
+                            <ExerciseHeader exercise={exercise.name} target={exercise.target} equipment={exercise.equipment} />
+                            <table className="w-full text-sm">
+                                <tbody>
+                                    { exercise.sets?.map((set, indexSet) => {
+                                        return (
+                                            <Fragment key={indexSet}>
+                                                <SetRow order={indexSet} type={set.type} weight={set.weight!} reps={set.reps!} action={(e) => deleteSet(indexExercise, indexSet)} />
+                                            </Fragment>
+                                        )
+                                    })
+                                    }
+                                </tbody>
+                            </table>
+                            <div className="text-xs mt-4 mb-2 py-3 px-2 rounded-md bg-white/20 block text-center" onClick={(e) => addSet(indexExercise)}>Adicionar set</div>
+                            <div className="flex justify-between gap-2 text-center">
+                                <div className="flex-1 text-xs py-3 px-2 rounded-md bg-white/20">Estatísticas anteriores</div>
+                            </div>
                         </div>
-                        <div>
-                            <input type="number" name="test" inputMode="decimal" className="text-sm text-right bg-black mr-2 py-1 px-2 w-16 inline border border-white/25 align-middle" />kg
-                        </div>
-                        <div>
-                            <input type="number" inputMode="numeric" className="text-sm bg-black mr-2 py-1 px-1 w-9 inline-block border border-white/25 align-middle" />reps
-                        </div>
-                    </div>
-                    <table className="w-full text-sm">
-                        <tbody>
-                            <tr>
-                                <td className="w-1/12 py-2">1</td>
-                                <td className="w-6/12">Standard set</td>
-                                <td className="w-2/12 text-center">50 kg</td>
-                                <td className="w-1/12 text-center">X</td>
-                                <td className="w-2/12 text-center">10 reps</td>
-                            </tr>
-                            <tr>
-                                <td className="w-1/12 py-2">2</td>
-                                <td className="w-6/12">Standard set</td>
-                                <td className="w-2/12 text-center">60 kg</td>
-                                <td className="w-1/12 text-center">X</td>
-                                <td className="w-2/12 text-center">10 reps</td>
-                            </tr>
-                            <tr>
-                                <td className="w-1/12 py-2">3</td>
-                                <td className="w-6/12">Standard set</td>
-                                <td className="w-2/12 text-center">70 kg</td>
-                                <td className="w-1/12 text-center">X</td>
-                                <td className="w-2/12 text-center">10 reps</td>
-                            </tr>
-                            <tr>
-                                <td className="w-1/12 py-2">4</td>
-                                <td className="w-6/12">Standard set</td>
-                                <td className="w-2/12 text-center">80 kg</td>
-                                <td className="w-1/12 text-center">X</td>
-                                <td className="w-2/12 text-center">10 reps</td>
-                            </tr>
-                            <tr>
-                                <td className="w-1/12 py-2">5</td>
-                                <td className="w-6/12">Rest-Pause set</td>
-                                <td className="w-2/12 text-center">50 kg</td>
-                                <td className="w-1/12 text-center">X</td>
-                                <td className="w-2/12 text-center">10 reps</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <Link href="#" className="text-xs mt-4 mb-2 py-3 px-2 rounded-md bg-white/10 block text-center">Adicionar set</Link>
-                    <div className="flex justify-between gap-2 text-center">
-                        <Link href="#" className="flex-1 text-xs py-3 px-2 rounded-md bg-white/10">Estatísticas anteriores</Link>
-                        <Link href="#" className="flex-1 text-xs py-3 px-2 rounded-md bg-white/10">One Rep Max</Link>
-                    </div>
-                </div>
-
+                    )
+                })
+            }
 
             </MainContent>
         </Main>
             <div className="px-6 mb-8">
-                <Button link="#" title="Adicionar Exercício" primary />
+                <Button link="#" action={(e) => addExercise()} title="Adicionar Exercício" primary />
             </div>
     </div>
     )

@@ -26,9 +26,8 @@ export default function SettingsPage() {
                 : '' }
                 <MainContent>
                     <MenuCard>
-                        <MenuLink link="/settings/change-password" title="Alterar senha" />
                         <MenuLink link="https://github.com/matheusmisumoto/workout-logger-web" title="Repositório da aplicação no GitHub" />
-                        <MenuLink link="https://github.com/matheusmisumoto/workout-logger-api" title="Repositório da API no GiHub" />
+                        <MenuLink link="https://github.com/matheusmisumoto/workout-logger-api" title="Repositório da API no GitHub" />
                         <MenuLink link="https://matheusmisumoto.dev" title="Website do desenvolvedor" />
                     </MenuCard>
                     <p className="max-w-screen-md mx-auto text-center text-sm text-white/50">Desenvolvido por Matheus Misumoto</p>

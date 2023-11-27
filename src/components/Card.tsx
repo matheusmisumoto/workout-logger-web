@@ -1,6 +1,4 @@
-import { time } from "console";
 import Link from "next/link";
-import { title } from "process";
 
 export default function Card(props: {link?: string, title?: string, subtitle?:string, exercises?: number, time?: number, weight?: number} ){
 

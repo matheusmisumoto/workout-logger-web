@@ -1,5 +1,6 @@
 import Box from "@/components/Box"
 import BoxItem from "@/components/BoxItem"
+import Button from "@/components/Button"
 import Footer from "@/components/Footer"
 import Header from "@/components/Header"
 import Hero from "@/components/Hero"
@@ -118,6 +119,7 @@ export default function Workout(){
                             {type: "Standard", weight: 14, reps: 8}, 
                             {type: "Standard", weight: 14, reps: 8}]}
                 />
+                <Button link="#" title="Remover registro de treino" destructive />
             </MainContent>
         </Main>
         <Footer />

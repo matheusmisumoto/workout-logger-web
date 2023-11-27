@@ -1,14 +1,11 @@
-import Button from "@/components/Button";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import Hero from "@/components/Hero";
 import Main from "@/components/Main";
 import MainContent from "@/components/MainContent";
 import MenuCard from "@/components/MenuCard";
 import MenuLink from "@/components/MenuLink";
 
 export default function NewWorkout() {
-    let show = true;
     return (
         <div className="h-screen flex flex-col">
             <Header />

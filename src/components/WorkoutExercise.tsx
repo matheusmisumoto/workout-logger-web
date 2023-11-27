@@ -1,11 +1,9 @@
+import ExerciseHeader from "./ExerciseHeader"
+
 export default function WorkoutExercise(props: { exercise: string, target: string, equipment: string, sets: { id?: string, type: string, weight: number, reps: number }[] }){
     return(
         <div className="max-w-screen-md mx-auto pb-8 mb-8 border-b last:border-0 border-white/50">
-            <div className="mb-6">
-                <h3 className="my-1 text-xl font-bold">{props.exercise}</h3>
-                <p className="text-[.75rem]"><strong>Alvo: </strong>{props.target}</p>
-                <p className="text-[.75rem]"><strong>Equipamento: </strong>{props.equipment}</p>
-            </div>
+            <ExerciseHeader exercise={props.exercise} target={props.target} equipment={props.equipment} />
             <table className="w-full text-sm">
                 <tbody>
                     {

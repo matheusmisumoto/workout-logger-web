@@ -1,15 +1,21 @@
+'use client'
+
 import Link from "next/link";
 import { Logo } from "./icons/Logo";
 import BackIcon from "./icons/BackIcon";
+import { useRouter } from "next/navigation";
 
-export default function Header(props: { navigationURL?: string, navigationTitle?: string, actionURL?: string, actionTitle?: string }) {
+export default function Header(props: { navigationTitle?: string, actionTitle?: string, action?: (e: React.MouseEvent<HTMLElement>) => void }) {
+
+    const routerNav = useRouter();
+    
     return (
         <header className="px-1 h-12 bg-primary text-white">
             <div className="flex justify-between max-w-screen-md mx-auto gap-8">
                 <div className="flex flex-1 flex-col justify-center h-12">
-                { props.navigationURL ?
+                { props.navigationTitle ?
                     <div>
-                        <Link href={props.navigationURL} className="pr-4 py-4">
+                        <Link href="#" className="pr-4 py-4" onClick={() => routerNav.back()}>
                             <BackIcon className="h-5 w-auto my-0 mr-1 fill-white/80 inline align-text-top" />
                             {props.navigationTitle}
                         </Link>
@@ -22,9 +28,9 @@ export default function Header(props: { navigationURL?: string, navigationTitle?
                 </Link>
                 </div>
                 <div className="flex flex-1 flex-col justify-center h-12 text-right">
-                { props.actionURL ?
+                { props.actionTitle ?
                     <div>
-                        <Link href={props.actionURL} className="pr-4 py-4">
+                        <Link href="#" onClick={props.action} className="pr-4 py-4">
                             {props.actionTitle}
                         </Link>
                     </div>

@@ -8,12 +8,10 @@ import MenuCard from "@/components/MenuCard";
 import MenuLink from "@/components/MenuLink";
 
 export default function SettingsPage() {
-    let show = true;
     return (
         <div className="h-screen flex flex-col">
             <Header />
             <Main>
-                { show ? 
                 <Hero>
                     <div className="flex max-w-screen-md mx-auto gap-4">
                         
@@ -23,7 +21,6 @@ export default function SettingsPage() {
                         </div>
                     </div>
                 </Hero>
-                : '' }
                 <MainContent>
                     <MenuCard>
                         <MenuLink link="https://github.com/matheusmisumoto/workout-logger-web" title="Repositório da aplicação no GitHub" />

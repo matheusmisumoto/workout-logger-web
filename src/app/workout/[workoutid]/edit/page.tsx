@@ -1,15 +1,15 @@
 'use client'
 
-import { apiWithAuth } from "@/app/lib/api"
-import { ExerciseData, Sets, Workout } from "@/app/lib/interface"
+import { apiWithAuth } from "@/lib/api"
+import { ExerciseData, Sets, Workout } from "@/lib/interface"
 import Button from "@/components/Button"
 import ExerciseHeader from "@/components/ExerciseHeader"
 import Header from "@/components/Header"
 import Main from "@/components/Main"
 import MainContent from "@/components/MainContent"
 import RemoveIcon from "@/components/icons/RemoveIcon"
-import { redirect } from "next/navigation"
 import { useState, useEffect } from "react"
+import dictionary from "@/dictionaries/pt-BR.json";
 
 export default function TrackWorkout({ params } : { params?: { workoutid: string }}){
 
@@ -24,13 +24,15 @@ export default function TrackWorkout({ params } : { params?: { workoutid: string
             console.log(error);
         });
 
+        const workoutStorage = localStorage.getItem('workoutDraft');
+
         if(params?.workoutid) {
             apiWithAuth.get('workout/' + params.workoutid).then(response => {
                 setWorkout(response.data);
             });
-        } else if(localStorage.getItem('workoutDraft') && localStorage.getItem('workoutDraft') !== "undefined") {
-            const workoutStorage = localStorage.getItem('workoutDraft');
-            if(workoutStorage) {
+        } else if(workoutStorage && workoutStorage !== "undefined") {
+            const workoutStorageParsed: Workout = JSON.parse(workoutStorage!);
+            if(workoutStorageParsed.status === "IN_PROGRESS") {
                 setWorkout(JSON.parse(workoutStorage));
             }
         } else {
@@ -124,11 +126,13 @@ export default function TrackWorkout({ params } : { params?: { workoutid: string
         if (workout) {
             if(params?.workoutid) {
                 apiWithAuth.put('workout/' + params.workoutid, workout).then(response => {
+                    localStorage.removeItem('workoutDraft');
                     window.location.href = '/dashboard';
                 })
             } else {
                 workout.status = "COMPLETED";
                 apiWithAuth.post('workout', workout).then(response => {
+                    localStorage.removeItem('workoutDraft');
                     window.location.href = '/dashboard';
                 })
             }
@@ -139,7 +143,7 @@ export default function TrackWorkout({ params } : { params?: { workoutid: string
 
     return (
     <div className="h-full flex flex-col relative">
-        <Header navigationTitle="Voltar" actionTitle="Finalizar" action={(e) => setModals('finishWorkout')} />
+        <Header navigationTitle="Voltar" actionTitle="Finalizar" action={(e) => { if(workout!.exercises.length > 0) { setModals('finishWorkout') } } } />
         <Main>
             <MainContent>
             {
@@ -149,9 +153,11 @@ export default function TrackWorkout({ params } : { params?: { workoutid: string
                     </div>
                 :
                 workout?.exercises?.map((exercise, indexExercise) => {
+                    let targetFormat = dictionary.muscles[exercise.target as keyof typeof dictionary.muscles]
+                    let equipmentFormat = dictionary.equipment[exercise.equipment as keyof typeof dictionary.equipment]
                     return (
                         <div key={indexExercise} className="max-w-screen-md mx-auto pb-8 mb-8 border-b border-white/50">
-                            <ExerciseHeader exercise={exercise.name} target={exercise.target} equipment={exercise.equipment} />
+                            <ExerciseHeader exercise={exercise.name} target={targetFormat} equipment={equipmentFormat} />
                             <table className="w-full text-sm">
                                 <tbody>
                                     { 
@@ -166,7 +172,7 @@ export default function TrackWorkout({ params } : { params?: { workoutid: string
                                                         <select className="text-sm bg-black py-1 px-2 w-29 inline-block rounded-none" defaultValue={set.type} onChange={(e) => updateSet(indexExercise, indexSet, 'type', e.target.value)}>
                                                             {
                                                                 setType.map((type, index) => {
-                                                                    let typeFormat = (type.charAt(0) + type.slice(1).toLowerCase()).replace('_p', '-P');
+                                                                    let typeFormat = dictionary.setType[type as keyof typeof dictionary.setType];
                                                                     return <option key={index} value={type}>{typeFormat}</option>
                                                                 })
                                                             }
@@ -202,13 +208,15 @@ export default function TrackWorkout({ params } : { params?: { workoutid: string
                     <ul className="text-sm flex-1 overflow-y-scroll mb-12">
                         {
                             exercises.map((exercise, indexSet) => {
-                                        return (
-                                            <li key={indexSet} className="border-b border-white/50 mx-6 py-4" onClick={(e) => addExercise(exercise.id, exercise.name, exercise.target, exercise.equipment)}>
-                                                <h3 className="text-lg font-bold">{exercise.name}</h3>
-                                                <p><strong>Alvo: </strong>{exercise.target}</p>
-                                                <p><strong>Equipamento: </strong>{exercise.equipment}</p>
-                                            </li>
-                                        )
+                                let targetFormat = dictionary.muscles[exercise.target as keyof typeof dictionary.muscles]
+                                let equipmentFormat = dictionary.equipment[exercise.equipment as keyof typeof dictionary.equipment]
+                                return (
+                                    <li key={indexSet} className="border-b border-white/50 mx-6 py-4" onClick={(e) => addExercise(exercise.id, exercise.name, exercise.target, exercise.equipment)}>
+                                        <h3 className="text-lg font-bold">{exercise.name}</h3>
+                                        <p><strong>Alvo: </strong>{targetFormat}</p>
+                                        <p><strong>Equipamento: </strong>{equipmentFormat}</p>
+                                    </li>
+                                )
                             })
                         }
                     </ul>

@@ -3,6 +3,8 @@ import { jwtDecode } from "jwt-decode";
 
 interface User {
   sub: string;
+  name: string;
+  picture: string;
 }
 
 export function getUser(){

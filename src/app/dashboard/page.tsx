@@ -8,9 +8,10 @@ import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Main from "@/components/Main";
 import MainContent from "@/components/MainContent";
-import { apiWithAuth } from "../lib/api";
+import { apiWithAuth } from "@/lib/api";
 import { useState, useEffect } from "react";
-import { User, LastWorkouts } from "../lib/interface";
+import { User, LastWorkouts } from "../../lib/interface";
+import dictionary from "@/dictionaries/pt-BR.json";
 
 export default function Dashboard() {
 
@@ -60,11 +61,14 @@ export default function Dashboard() {
                                     hour: '2-digit',
                                     minute: '2-digit'
                                 });
+                            let musclesList = workout.target?.map((target: string) => {
+                                return dictionary.muscles[target as keyof typeof dictionary.muscles];
+                            }).join(', ');
                             return (
                                 <Card 
                                     key={workout.id} 
                                     title={workout.name} 
-                                    subtitle={formatDate} 
+                                    subtitle={musclesList} 
                                     exercises={workout.totalExercises} 
                                     time={workout.duration} 
                                     weight={workout.totalLifted} 

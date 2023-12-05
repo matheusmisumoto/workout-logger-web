@@ -11,8 +11,10 @@ import MainContent from "@/components/MainContent"
 import WorkoutExercise from "@/components/WorkoutExercise"
 
 import { Fragment, useEffect, useState } from "react"
-import { apiWithAuth } from "../../lib/api"
-import { Workout, Exercise } from "@/app/lib/interface"
+import { apiWithAuth } from "@/lib/api"
+import { Workout, Exercise } from "@/lib/interface"
+import dictionary from "@/dictionaries/pt-BR.json";
+
 
 export default function Workout({ params }: { params: { workoutid: string } }){
     const [workoutView, setWorkoutView] = useState<Workout>();
@@ -32,7 +34,7 @@ export default function Workout({ params }: { params: { workoutid: string } }){
         if(!exercises) return;
         exercises.forEach(exercise => {
             if(!muscles.includes(exercise.target)){
-                muscles.push(exercise.target);
+                muscles.push(dictionary.muscles[exercise.target as keyof typeof dictionary.muscles]);
             }
         });
         return muscles.join(', ');
@@ -74,12 +76,14 @@ export default function Workout({ params }: { params: { workoutid: string } }){
                 <MainContent>
                     {
                         workoutView?.exercises.map((exercise: Exercise) => {
+                            let targetFormat = dictionary.muscles[exercise.target as keyof typeof dictionary.muscles]
+                            let equipmentFormat = dictionary.equipment[exercise.equipment as keyof typeof dictionary.equipment]
                             return (
                                 <Fragment key={exercise.id}>
                                     <WorkoutExercise 
                                         exercise={exercise.name} 
-                                        target={exercise.target} 
-                                        equipment={exercise.equipment} 
+                                        target={targetFormat} 
+                                        equipment={equipmentFormat} 
                                         sets={exercise.sets}
                                     />
                                 </Fragment>

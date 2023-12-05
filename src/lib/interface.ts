@@ -15,6 +15,7 @@ export interface LastWorkouts {
     name: string,
     comment: Text,
     duration: number,
+    target?: string[],
     totalLifted: number,
     totalExercises: number
 }

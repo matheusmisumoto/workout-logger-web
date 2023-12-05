@@ -1,0 +1,45 @@
+{
+    "muscles": {
+        "Chest": "Peito",
+        "Forearms": "Antebraços",
+        "Lats": "Dorsais",
+        "Middle Back": "Costas",
+        "Lower Back": "Lombar",
+        "Neck": "Pescoço",
+        "Quadriceps": "Quadríceps",
+        "Hamstrings": "Isquiotibiais",
+        "Calves": "Panturrilhas",
+        "Triceps": "Tríceps",
+        "Traps": "Trapézio",
+        "Shoulders": "Ombros",
+        "Abdominals": "Abdômen",
+        "Glutes": "Glúteos",
+        "Biceps": "Bíceps",
+        "Adductors": "Adutores",
+        "Abductors": "Abdutores",
+        "Cardio": "Cardio",
+        "Other": "Outro"
+    },
+
+    "equipment": {
+        "Bands": "Elástico",
+        "Foam Roll": "Rolo de espuma",
+        "Barbell": "Barra",
+        "Kettlebells": "Kettlebells",
+        "Body Only": "Peso do corpo",
+        "Machine": "Máquina",
+        "Cable": "Cabo",
+        "Medicine Ball": "Bola medicinal",
+        "Dumbbell": "Halteres",
+        "E-Z Curl Bar": "Barra W",
+        "Exercise Ball": "Bola de exercício",
+        "Other": "Outro"
+    },
+
+    "setType": {
+        "STANDARD": "Padrão",
+        "DROP": "Drop",
+        "NEGATIVE": "Negativo",
+        "REST_PAUSE": "Rest-Pause"
+    }
+}

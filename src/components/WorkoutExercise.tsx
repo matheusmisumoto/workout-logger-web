@@ -1,5 +1,6 @@
-import { Sets } from "@/app/lib/interface"
+import { Sets } from "@/lib/interface"
 import ExerciseHeader from "./ExerciseHeader"
+import dictionary from "@/dictionaries/pt-BR.json";
 
 export default function WorkoutExercise(props: { exercise: string, target: string, equipment: string, sets: Sets[] }){
     return(
@@ -9,7 +10,7 @@ export default function WorkoutExercise(props: { exercise: string, target: strin
                 <tbody>
                     {
                         props.sets.map((set, index) => {
-                            let type = (set.type!.charAt(0) + set.type!.slice(1).toLowerCase()).replace('_p', '-P')
+                            let type= dictionary.setType[set.type as keyof typeof dictionary.setType];
                             return (
                                 <tr key={index}>
                                     <td className="py-2 pr-2"><span className="rounded-full bg-primary/75 py-1 px-2 text-[.75rem]">{index+1}</span></td>

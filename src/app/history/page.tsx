@@ -6,8 +6,8 @@ import Header from "@/components/Header";
 import Main from "@/components/Main";
 import MainContent from "@/components/MainContent";
 import { useEffect, useState } from "react";
-import { apiWithAuth } from "../lib/api";
-import { WorkoutCard } from "../lib/interface";
+import { apiWithAuth } from "@/lib/api";
+import { WorkoutCard } from "@/lib/interface";
 
 export default function Dashboard() {
     const [workoutHistory, setWorkoutHistory] = useState<WorkoutCard[]>([]);

@@ -6,27 +6,32 @@ import Main from "@/components/Main";
 import MainContent from "@/components/MainContent";
 import MenuCard from "@/components/MenuCard";
 import MenuLink from "@/components/MenuLink";
+import { useEffect, useState } from "react";
 
 export default function NewWorkout() {
-    let showDraftLink;
-    const workoutStorage = localStorage.getItem('workoutDraft');
+    const[draftLink, setDraftLink] = useState(false);
 
-    if(workoutStorage){
-        const draft = JSON.parse(workoutStorage);
-        if(draft.exercises.length > 0) {
-            showDraftLink = true;
+    useEffect(() => {
+        if(typeof localStorage !== 'undefined') {
+            const workoutStorage = localStorage.getItem('workoutDraft');
+            if(workoutStorage){
+                const draft = JSON.parse(workoutStorage);
+                if(draft.exercises.length > 0) {
+                    setDraftLink(true);
+                }
+            }    
         }
-    }
+    },[])
 
     return (
-        <div className="h-screen flex flex-col">
+        <div className="h-full flex flex-col">
             <Header />
             <Main>
                 <MainContent>
                     <h2 className="my-4 text-3xl font-bold max-w-screen-md mx-auto">Novo Treino</h2>
                     <MenuCard>
                     {
-                        showDraftLink ?
+                        draftLink ?
                             <MenuLink link="/workout/new/track" title="Continuar treino" subtitle="Continue o registro de onde parou" />
                         :
                             <MenuLink link="/workout/new/track" title="Iniciar treino vazio" subtitle="Adicione exercícios conforme treina" />

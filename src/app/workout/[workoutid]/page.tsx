@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import Box from "@/components/Box"
 import BoxItem from "@/components/BoxItem"
@@ -14,6 +14,8 @@ import { Fragment, useEffect, useState } from "react"
 import { apiWithAuth } from "@/lib/api"
 import { Workout, Exercise } from "@/lib/interface"
 import dictionary from "@/dictionaries/pt-BR.json";
+import { formatDate } from "@/lib/util"
+import { getToken, getUser } from "@/lib/auth"
 
 
 export default function Workout({ params }: { params: { workoutid: string } }){
@@ -21,7 +23,7 @@ export default function Workout({ params }: { params: { workoutid: string } }){
     const [showError, setShowError] = useState<boolean>(false);
 
     useEffect(() => {
-        apiWithAuth.get('workout/' + params.workoutid).then(response => {
+        apiWithAuth(getToken()).get('workouts/user/' + getUser()?.sub + '/' + params.workoutid).then(response => {
           setWorkoutView(response.data);
         }).catch(error => {
             setShowError(true);
@@ -42,14 +44,14 @@ export default function Workout({ params }: { params: { workoutid: string } }){
 
     const deleteWorkout = () => {
         if (workoutView) {
-            apiWithAuth.delete('workout/' + params.workoutid).then(response => {
+            apiWithAuth(getToken()).delete('workouts/' + params.workoutid).then(response => {
                 window.location.href = '/dashboard';
             });
         }
     }
 
     return (
-    <div className="h-screen flex flex-col">
+    <div className="h-full flex flex-col">
         <Header navigationTitle="Voltar" />
         <Main>
             { (showError && !workoutView) &&
@@ -65,7 +67,15 @@ export default function Workout({ params }: { params: { workoutid: string } }){
             { workoutView &&
                 <>
                 <Hero>
-                    <h2 className="mt-0 mb-1 text-2xl font-bold max-w-screen-md mx-auto">{workoutView?.name}</h2>
+                    {
+                        workoutView?.name ?
+                            <>
+                                <h2 className="mt-0 text-2xl font-bold max-w-screen-md mx-auto">{workoutView?.name}</h2>
+                                <p className="text-[.875rem] mb-4 font-bold max-w-screen-md mx-auto">{formatDate(workoutView?.date!, true)}</p>
+                            </>
+                        :
+                            <h2 className="mt-0 mb-2 text-2xl font-bold max-w-screen-md mx-auto">{formatDate(workoutView?.date!, true)}</h2>
+                    }
                     <p className="text-[.875rem] max-w-screen-md mx-auto">{listMuscles(workoutView?.exercises!)}</p>
                     <Box>
                         <BoxItem data={workoutView?.exercises.length} description="exercícios" />
@@ -97,8 +107,8 @@ export default function Workout({ params }: { params: { workoutid: string } }){
                             <p className="text-sm max-w-screen-md mx-auto">{workoutView?.comment}</p>
                         </div>
                     }                    
-                    <Button link={'/workout/' + workoutView.id + '/edit'} title="Editar registro de treino" primary />
-                    <Button link="#" title="Remover registro de treino" action={() => deleteWorkout()} destructive />
+                    <Button link={'/workout/' + workoutView.id + '/edit'} title="Editar treino" />
+                    <Button link="#" title="Remover treino" action={() => deleteWorkout()} destructive />
                 </MainContent>
                 </>
             }

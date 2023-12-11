@@ -11,7 +11,7 @@ export interface User {
 export interface LastWorkouts {
     id: string,
     user: string,
-    date: string,
+    date: Date,
     name: string,
     comment: Text,
     duration: number,
@@ -31,11 +31,12 @@ export interface Exercise {
     name: string,
     target: string,
     equipment: string,
-    sets: Sets[]
+    sets: Sets[],
+    oneRepMax?: number
 }
 
 export interface ExerciseData {
-    id: string,
+    id?: string,
     name: string,
     target: string,
     equipment: string
@@ -43,6 +44,7 @@ export interface ExerciseData {
 
 export interface Workout {
     id?: string,
+    date?: Date,
     user: string,
     name?: string,
     status?: string,
@@ -53,13 +55,18 @@ export interface Workout {
     exercises: Exercise[]
 }
 
-export interface WorkoutCard {
+export interface PreviousStats {
     id: string,
-    user: string,
-    date: Date,
-    name: string,
-    comment: Text,
-    duration?: number,
-    totalLifted?: number,
-    totalExercises?: number
+    exercise: string,
+    workouts: [
+        {
+            date: Date,
+            sets: Sets[]
+        }
+    ]
+}
+
+export interface Modal {
+    type: string | null,
+    data?: string | null
 }

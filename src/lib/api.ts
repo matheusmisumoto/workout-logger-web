@@ -1,10 +1,12 @@
 import axios from 'axios';
-import { cookies, headers } from 'next/headers';
 
 export const api = axios.create({
-    baseURL: 'http://localhost:8080/',
+    baseURL: `${process.env.NEXT_PUBLIC_FITLOGR_API_URL}/`,
 });
 
-export const apiWithAuth = axios.create({
-    baseURL:'http://localhost:8080/v1/',
+export const apiWithAuth = (token?: string) => axios.create({
+    baseURL: `${process.env.NEXT_PUBLIC_FITLOGR_API_URL}/v1/`,
+    headers: {
+        'Authorization': `Bearer ${token}`,
+    },
 });

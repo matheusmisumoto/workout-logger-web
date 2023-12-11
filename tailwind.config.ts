@@ -17,11 +17,13 @@ const config: Config = {
     colors: {
       'white': '#ffffff',
       'black': '#000000',
-      'primary': '#3498db',
-      'secondary': '#192f4d',
+      'brand': '#3498DB',
+      'primary': '#0A84FF',
+      'secondary': '#0e3650',
+      'modal': '#0F3A57',
       'mobile-nav': '#121212',
       'card': '#333333',
-      'destructive': '#dc2626'
+      'destructive': '#F40009'
     }
   },
   plugins: [],

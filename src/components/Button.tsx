@@ -4,12 +4,12 @@ export default function Button(props: { link?:string, title: string, destructive
     
     let style; 
     if(props.destructive == true){
-        style = "bg-white/10 text-destructive font-bold"
+        style = "bg-white/5 text-destructive"
     } else if (props.primary == true){
-        style = "bg-secondary text-white/90"
+        style = "bg-primary text-white/90 font-bold"
     } else {
-        style = "bg-white/10 text-white/90"
+        style = "bg-secondary text-white/90 text-white/90"
     }
     
-    return(<Link href={props.link!} className={`rounded-xl ${style} text-center py-3 my-4 block w-full max-w-screen-md mx-auto`} onClick={props.action}>{props.title}</Link>)
+    return(<Link href={props.link!} className={`rounded-xl ${style} text-md text-center py-3 my-4 block w-full max-w-screen-md mx-auto`} onClick={props.action}>{props.title}</Link>)
 }

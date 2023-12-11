@@ -1,24 +1,27 @@
 'use client'
 
 import { apiWithAuth } from "@/lib/api"
-import { ExerciseData, Sets, Workout } from "@/lib/interface"
+import { ExerciseData, Modal, PreviousStats, Sets, Workout } from "@/lib/interface"
 import Button from "@/components/Button"
 import ExerciseHeader from "@/components/ExerciseHeader"
 import Header from "@/components/Header"
 import Main from "@/components/Main"
 import MainContent from "@/components/MainContent"
 import RemoveIcon from "@/components/icons/RemoveIcon"
-import { useState, useEffect } from "react"
+import { useState, useEffect, Fragment } from "react"
 import dictionary from "@/dictionaries/pt-BR.json";
+import { calculate1RM, formatDate } from "@/lib/util"
+import { getUser, getToken } from "@/lib/auth"
 
 export default function TrackWorkout({ params } : { params?: { workoutid: string }}){
 
     const [workout, setWorkout] = useState<Workout>()
-    const [modals, setModals] = useState<String | null>()
+    const [modals, setModals] = useState<Modal>()
     const [exercises, setExercises] = useState<ExerciseData[]>([])
+    const [previousStats, setPreviousStats] = useState<PreviousStats>()
     
     useEffect(() => {
-        apiWithAuth.get('exercises').then(response => {
+        apiWithAuth(getToken()).get('exercises').then(response => {
             setExercises(response.data);
         }).catch(error => {
             console.log(error);
@@ -27,7 +30,7 @@ export default function TrackWorkout({ params } : { params?: { workoutid: string
         const workoutStorage = localStorage.getItem('workoutDraft');
 
         if(params?.workoutid) {
-            apiWithAuth.get('workout/' + params.workoutid).then(response => {
+            apiWithAuth(getToken()).get('workouts/user/' + getUser()?.sub + '/' + params.workoutid).then(response => {
                 setWorkout(response.data);
             });
         } else if(workoutStorage && workoutStorage !== "undefined") {
@@ -37,11 +40,10 @@ export default function TrackWorkout({ params } : { params?: { workoutid: string
             }
         } else {
             const initial: Workout = {
-                user: '3da69246-f18f-4303-b438-cc22863fb17e',
+                user: getUser()?.sub!,
                 status: "IN_PROGRESS",
                 exercises: []
             }
-    
             setWorkout(initial);
         }
         
@@ -55,7 +57,11 @@ export default function TrackWorkout({ params } : { params?: { workoutid: string
         }
     }, [workout, params?.workoutid]);
 
-    function deleteSet(indexExercise: number, indexSet: number) {
+    const closeModal = () => {
+        setModals({type: null, data: null});
+    }
+
+    const deleteSet = (indexExercise: number, indexSet: number) => {
         if (workout && workout.exercises && workout.exercises[indexExercise].sets) {
             const newWorkout = { ...workout };
             newWorkout.exercises[indexExercise].sets.splice(indexSet, 1);
@@ -68,18 +74,23 @@ export default function TrackWorkout({ params } : { params?: { workoutid: string
         }
     }
 
-    function updateSet(indexExercise: number, indexSet: number, field: keyof Sets, value: number | string) {
+    const updateSet = (indexExercise: number, indexSet: number, field: keyof Sets, value: number | string) => {
         if (workout && workout.exercises && workout.exercises[indexExercise].sets) {
             const newWorkout = { ...workout };
+
             newWorkout.exercises[indexExercise].sets[indexSet] = {
                 ...newWorkout.exercises[indexExercise].sets[indexSet],
                 [field]: value
             };
+
+            const oneRM = calculate1RM(newWorkout.exercises[indexExercise].sets);
+            newWorkout.exercises[indexExercise].oneRepMax = oneRM;
+
             setWorkout(newWorkout);
         }
     }
 
-    function addSet(indexExercise: number) {
+    const addSet = (indexExercise: number) => {
         if (workout && workout.exercises && workout.exercises[indexExercise].sets) {
             const newWorkout = { ...workout };
             newWorkout.exercises[indexExercise].sets.push({
@@ -91,7 +102,7 @@ export default function TrackWorkout({ params } : { params?: { workoutid: string
         }
     }
 
-    function addMetaData(field: keyof Workout, value: number | string){
+    const addMetaData = (field: keyof Workout, value: number | string) => {
         if(workout) {
             const newWorkout = { 
                 ...workout,
@@ -101,7 +112,7 @@ export default function TrackWorkout({ params } : { params?: { workoutid: string
         }
     }
 
-    function addExercise(id: string, name: string, target: string, equipment: string) {
+    const addExercise = (id: string, name: string, target: string, equipment: string) => {
         if (workout) {
             const newWorkout = { ...workout };
             newWorkout.exercises.push({
@@ -118,20 +129,28 @@ export default function TrackWorkout({ params } : { params?: { workoutid: string
                 ]
             });
             setWorkout(newWorkout);
-            setModals(null);
+            setModals({type: null});
         }
     }
 
-    function finishWorkout() {
+    const getPreviousStats = (userid: string, exerciseid: string, type: string) => {
+            apiWithAuth(getToken()).get('workouts/user/' + userid + '/exercise/' + exerciseid).then(response => {
+                setPreviousStats(response.data);
+                setModals({type: type, data: exerciseid}); 
+            });
+        
+    }
+
+    const finishWorkout = () => {
         if (workout) {
             if(params?.workoutid) {
-                apiWithAuth.put('workout/' + params.workoutid, workout).then(response => {
+                apiWithAuth(getToken()).put('workouts/' + params.workoutid, workout).then(response => {
                     localStorage.removeItem('workoutDraft');
                     window.location.href = '/dashboard';
                 })
             } else {
                 workout.status = "COMPLETED";
-                apiWithAuth.post('workout', workout).then(response => {
+                apiWithAuth(getToken()).post('workouts', workout).then(response => {
                     localStorage.removeItem('workoutDraft');
                     window.location.href = '/dashboard';
                 })
@@ -139,11 +158,9 @@ export default function TrackWorkout({ params } : { params?: { workoutid: string
         }
     }
 
-    const setType = ['STANDARD', 'DROP', 'NEGATIVE', 'REST_PAUSE'];
-
     return (
     <div className="h-full flex flex-col relative">
-        <Header navigationTitle="Voltar" actionTitle="Finalizar" action={(e) => { if(workout!.exercises.length > 0) { setModals('finishWorkout') } } } />
+        <Header navigationTitle="Voltar" actionTitle="Finalizar" action={(e) => { if(workout!.exercises.length > 0) { setModals({type: 'finishWorkout'}) } } } />
         <Main>
             <MainContent>
             {
@@ -171,7 +188,7 @@ export default function TrackWorkout({ params } : { params?: { workoutid: string
                                                     <td className="w-3/12 pb-2">
                                                         <select className="text-sm bg-black py-1 px-2 w-29 inline-block rounded-none" defaultValue={set.type} onChange={(e) => updateSet(indexExercise, indexSet, 'type', e.target.value)}>
                                                             {
-                                                                setType.map((type, index) => {
+                                                                Object.keys(dictionary.setType).map((type, index) => {
                                                                     let typeFormat = dictionary.setType[type as keyof typeof dictionary.setType];
                                                                     return <option key={index} value={type}>{typeFormat}</option>
                                                                 })
@@ -190,20 +207,23 @@ export default function TrackWorkout({ params } : { params?: { workoutid: string
                             </table>
                             <div className="text-xs mt-4 mb-2 py-3 px-2 rounded-md bg-white/20 block text-center" onClick={(e) => addSet(indexExercise)}>Adicionar set</div>
                             <div className="flex justify-between gap-2 text-center">
-                                <div className="flex-1 text-xs py-3 px-2 rounded-md bg-white/20">Estatísticas anteriores</div>
+                                <div className="flex-1 text-xs py-3 px-2 rounded-md bg-white/20" onClick={(e) => { getPreviousStats(workout.user, exercise.id, 'previousSets') }}>Estatísticas anteriores</div>
+                                <div className="flex-1 text-xs py-3 px-2 rounded-md bg-white/20" onClick={(e) => { getPreviousStats(workout.user, exercise.id, '1RM') }}>One Rep Max</div>
                             </div>
                         </div>
                     )
                 })
             }
             </MainContent>
-            { 
-            (modals == "addExercise") && 
-            <div className="absolute m-auto right-0 bottom-0 left-0 w-full h-full bg-black/80">
-                <div className="absolute flex flex-col m-auto right-0 bottom-0 left-0 w-full max-w-screen-md mx-auto h-4/6 bg-secondary rounded-t-3xl">
+            {
+            (modals?.type) &&
+            <div className="modal-background absolute m-auto right-0 bottom-0 left-0 w-full h-full bg-black/80">
+                {
+                (modals.type == "addExercise") && 
+                <div className="modal absolute flex flex-col m-auto right-0 bottom-0 left-0 w-full max-w-screen-md mx-auto h-3/6 bg-secondary rounded-t-3xl">
                     <div className="flex">
                         <h2 className="text-2xl font-bold m-6 mb-2 flex-1">Selecionar exercício</h2>
-                        <RemoveIcon className="m-6 mb-2 fill-white" onClick={() => setModals(null)} />
+                        <RemoveIcon className="m-6 mb-2 fill-white" onClick={() => closeModal()} />
                     </div>
                     <ul className="text-sm flex-1 overflow-y-scroll mb-12">
                         {
@@ -211,7 +231,7 @@ export default function TrackWorkout({ params } : { params?: { workoutid: string
                                 let targetFormat = dictionary.muscles[exercise.target as keyof typeof dictionary.muscles]
                                 let equipmentFormat = dictionary.equipment[exercise.equipment as keyof typeof dictionary.equipment]
                                 return (
-                                    <li key={indexSet} className="border-b border-white/50 mx-6 py-4" onClick={(e) => addExercise(exercise.id, exercise.name, exercise.target, exercise.equipment)}>
+                                    <li key={indexSet} className="border-b border-white/50 mx-6 py-4" onClick={(e) => addExercise(exercise.id!, exercise.name, exercise.target, exercise.equipment)}>
                                         <h3 className="text-lg font-bold">{exercise.name}</h3>
                                         <p><strong>Alvo: </strong>{targetFormat}</p>
                                         <p><strong>Equipamento: </strong>{equipmentFormat}</p>
@@ -221,34 +241,118 @@ export default function TrackWorkout({ params } : { params?: { workoutid: string
                         }
                     </ul>
                 </div>
-            </div>
-            }
-            { 
-            (modals == "finishWorkout") && 
-            <div className="absolute m-auto right-0 bottom-0 left-0 w-full h-full bg-black/80">
-                <div className="absolute flex flex-col m-auto right-0 bottom-0 left-0 w-full max-w-screen-md mx-auto h-3/6 bg-secondary rounded-t-3xl">
+                }
+                {
+                (modals.type == "previousSets") &&
+                <div className="modal absolute flex flex-col m-auto right-0 bottom-0 left-0 w-full max-w-screen-md mx-auto h-3/6 bg-secondary rounded-t-3xl">
+                    <div className="flex">
+                        <h2 className="text-2xl font-bold m-6 mb-2 flex-1">Estatísticas Anteriores</h2>
+                        <RemoveIcon className="m-6 mb-2 fill-white" onClick={() => closeModal()} />
+                    </div>
+                    <h3 className="mx-6 mt-3 text-lg font-bold">{previousStats?.exercise}</h3>
+                    <div className="text-sm flex-1 mt-3 mb-12 px-6 flex flex-col overflow-y-auto">
+                        {
+                            (previousStats && previousStats.workouts.length < 1) ? 
+                                <div className="flex flex-col justify-center items-center h-full">
+                                    <p className="text-center text-white/50 align-middle">Nenhum treino registrado</p> 
+                                </div>
+                            :
+                            previousStats?.workouts.map((workout, index) => {
+                                return (
+                                    <Fragment key={index}>
+                                        <h4 className="text-md font-bold">{ formatDate(workout.date) }</h4>
+                                        <table className="w-full text-sm mt-2 mb-6">
+                                            <tbody>
+                                                {
+                                                    workout.sets.map((set, index) => {
+                                                        let type= dictionary.setType[set.type as keyof typeof dictionary.setType];
+                                                        return (
+                                                            <tr key={index}>
+                                                                <td className="w-1/12 py-2 pr-2"><span className="rounded-full bg-primary/75 py-1 px-2 text-[.75rem]">{index+1}</span></td>
+                                                                <td className="w-6/12">{type}</td>
+                                                                <td className="text-right">{set.weight} kg</td>
+                                                                <td className="w-1/12 text-center text-white/50">X</td>
+                                                                <td>{set.reps} reps</td>
+                                                            </tr>
+                                                        )
+                                                    })
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </Fragment>
+                                )
+                            })
+                        }
+                    </div>
+                </div>                
+                }
+                {
+                (modals.type == "1RM") &&
+                <div className="modal absolute flex flex-col m-auto right-0 bottom-0 left-0 w-full max-w-screen-md mx-auto h-3/6 bg-secondary rounded-t-3xl">
+                    <div className="flex">
+                        <h2 className="text-2xl font-bold m-6 mb-2 flex-1">One Repetition Max</h2>
+                        <RemoveIcon className="m-6 mb-2 fill-white" onClick={() => closeModal()} />
+                    </div>
+                    <h3 className="mx-6 mt-3 text-lg font-bold">{previousStats?.exercise}</h3>
+                    {
+                        (workout?.exercises.find((exercise) => exercise.id === modals.data)?.oneRepMax) ?
+                            <div className="rounded-full bg-black/75 mx-6 mt-4 p-2 text-center text-white">
+                                One Rep Max atual: { workout?.exercises.find((exercise) => exercise.id === modals.data)?.oneRepMax?.toFixed(2) } kg
+                            </div>
+                        :
+                        ''
+                    }
+                    <div className="text-sm flex-1 mt-2 mb-12 px-6 flex flex-col overflow-y-auto">
+                        {
+                            (previousStats && previousStats.workouts.length < 1) ? 
+                                <div className="flex flex-col justify-center items-center h-full">
+                                    <p className="text-center text-white/50 align-middle">Nenhum treino registrado</p> 
+                                </div>
+                            :
+                                <table className="w-full text-sm mt-2 mb-6">
+                                    <tbody>
+                                {
+                                    previousStats?.workouts.map((workout, index) => {
+                                        return (
+                                            <tr key={index} className="border-b border-white/25">
+                                                <td className="w-9/12 py-2">{formatDate(workout.date)}</td>
+                                                <td className="text-right py-2"><strong>{calculate1RM(workout.sets).toFixed(2)} kg</strong></td>
+                                            </tr>
+                                        )
+                                    })
+                                }
+                                    </tbody>
+                                </table>
+                        }
+                    </div>
+                </div>                
+                }
+                {
+                (modals.type == "finishWorkout") && 
+                <div className="modal absolute flex flex-col m-auto right-0 bottom-0 left-0 w-full max-w-screen-md mx-auto h-3/6 bg-secondary rounded-t-3xl">
                     <div className="flex">
                         <h2 className="text-2xl font-bold m-6 mb-2 flex-1">Dados do treino</h2>
-                        <RemoveIcon className="m-6 mb-2 fill-white" onClick={() => setModals(null)} />
+                        <RemoveIcon className="m-6 mb-2 fill-white" onClick={() => closeModal()} />
                     </div>
                     
-                    <div className="text-sm flex-1 mt-6 mb-12 mx-6 flex flex-col">
+                    <div className="flex-1 mt-6 mb-12 mx-6 flex flex-col">
                         <input type="text" name="workoutName" className="text-lg px-2 py-1 rounded-lg bg-black/50 w-full mb-3" placeholder="Título (opcional)" defaultValue={workout?.name} onChange={(e) => addMetaData("name", e.target.value)} />
                         <div className="flex justify-between gap-2 text-center mb-3 mx-1">
-                            <div className="flex-1">
+                            <div className="flex-1 text-sm">
                                 <input type="number" min={0} name="workoutDuration" inputMode="numeric" className="text-md bg-white/10 text-white mr-2 py-1 px-2 w-12 align-middle" placeholder="0" defaultValue={workout?.duration} onChange={(e) => addMetaData("duration", Number(e.target.value))} /> minutos
                             </div>                            
                         </div>
                         <textarea name="workoutComment" className="text-md px-2 py-1 rounded-lg bg-black/50 w-full h-24 resize-none" placeholder="Comentário (opcional)" defaultValue={workout?.comment} onChange={(e) => addMetaData("comment", e.target.value)}></textarea>
-                        <Button link="#" title="Finalizar treino" action={() => finishWorkout()} />
+                        <Button link="#" title="Finalizar treino" action={() => finishWorkout()} primary />
                     </div>
                 </div>
+                }
             </div>
             }
-            <div className="px-6 mb-8 static">
-                <Button link="#" action={() => setModals('addExercise')} title="Adicionar Exercício" primary />
-            </div>
         </Main>
+        <div className="px-6 mb-8 static">
+                <Button link="#" action={() => setModals({type: 'addExercise'})} title="Adicionar Exercício" primary />
+        </div>
     </div>
     )
 }

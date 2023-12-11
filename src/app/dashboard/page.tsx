@@ -12,6 +12,9 @@ import { apiWithAuth } from "@/lib/api";
 import { useState, useEffect } from "react";
 import { User, LastWorkouts } from "../../lib/interface";
 import dictionary from "@/dictionaries/pt-BR.json";
+import { formatDate } from "@/lib/util";
+import { getToken, getUser } from "@/lib/auth";
+import { cookies } from "next/headers";
 
 export default function Dashboard() {
 
@@ -19,18 +22,19 @@ export default function Dashboard() {
     const [lastWorkouts, setLastWorkouts] = useState<LastWorkouts[]>([])
 
     useEffect(() => {
-          apiWithAuth.get('user/3da69246-f18f-4303-b438-cc22863fb17e').then(response => {
+          apiWithAuth(getToken()).get('users/' + getUser()?.sub ).then(response => {
             setUser(response.data);
           })
           
-          apiWithAuth.get('workout/user/3da69246-f18f-4303-b438-cc22863fb17e/last').then(response => {
+          apiWithAuth(getToken()).get('workouts/user/' + getUser()?.sub + '/last').then(response => {
             setLastWorkouts(response.data);
           })
+
 
     }, []);
 
     return (
-        <div className="h-screen flex flex-col">
+        <div className="h-full flex flex-col">
             <Header />
             <Main>
                 <Hero>
@@ -51,23 +55,13 @@ export default function Dashboard() {
                     <h2 className="mb-3 text-2xl font-bold max-w-screen-md mx-auto">Últimos treinos</h2>
                     {
                         lastWorkouts.map((workout: LastWorkouts) => {
-                            let formatDate = new Date(workout.date).toLocaleString('pt-BR',
-                                {
-                                    year: 'numeric',
-                                    month: 'long',
-                                    day: 'numeric'
-                                }) + ', ' + new Date(workout.date).toLocaleTimeString('pt-BR',
-                                {
-                                    hour: '2-digit',
-                                    minute: '2-digit'
-                                });
                             let musclesList = workout.target?.map((target: string) => {
                                 return dictionary.muscles[target as keyof typeof dictionary.muscles];
                             }).join(', ');
                             return (
                                 <Card 
                                     key={workout.id} 
-                                    title={workout.name} 
+                                    title={workout.name ? workout.name : formatDate(workout.date, true)}
                                     subtitle={musclesList} 
                                     exercises={workout.totalExercises} 
                                     time={workout.duration} 

@@ -14,23 +14,20 @@ import { User, LastWorkouts } from "../../lib/interface";
 import dictionary from "@/dictionaries/pt-BR.json";
 import { formatDate } from "@/lib/util";
 import { getToken, getUser } from "@/lib/auth";
-import { cookies } from "next/headers";
 
 export default function Dashboard() {
-
+    
     const [user, setUser] = useState<User>()
     const [lastWorkouts, setLastWorkouts] = useState<LastWorkouts[]>([])
 
     useEffect(() => {
-          apiWithAuth(getToken()).get('users/' + getUser()?.sub ).then(response => {
+        apiWithAuth(getToken()).get('users/' + getUser()?.sub ).then(response => {
             setUser(response.data);
-          })
+        })
           
-          apiWithAuth(getToken()).get('workouts/user/' + getUser()?.sub + '/last').then(response => {
+        apiWithAuth(getToken()).get('workouts/user/' + getUser()?.sub + '/last').then(response => {
             setLastWorkouts(response.data);
-          })
-
-
+        })
     }, []);
 
     return (

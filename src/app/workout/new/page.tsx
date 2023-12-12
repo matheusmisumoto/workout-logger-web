@@ -9,6 +9,7 @@ import MenuLink from "@/components/MenuLink";
 import { useEffect, useState } from "react";
 
 export default function NewWorkout() {
+
     const[draftLink, setDraftLink] = useState(false);
 
     useEffect(() => {
@@ -21,7 +22,7 @@ export default function NewWorkout() {
                 }
             }    
         }
-    },[])
+    }, [])
 
     return (
         <div className="h-full flex flex-col">

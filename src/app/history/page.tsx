@@ -13,6 +13,7 @@ import dictionary from "@/dictionaries/pt-BR.json";
 import { getUser, getToken } from "@/lib/auth";
 
 export default function WorkoutHistory() {
+    
     const [workoutHistory, setWorkoutHistory] = useState<LastWorkouts[]>([]);
 
     useEffect(() => {

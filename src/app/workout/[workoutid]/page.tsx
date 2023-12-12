@@ -17,8 +17,8 @@ import dictionary from "@/dictionaries/pt-BR.json";
 import { formatDate } from "@/lib/util"
 import { getToken, getUser } from "@/lib/auth"
 
-
 export default function Workout({ params }: { params: { workoutid: string } }){
+    
     const [workoutView, setWorkoutView] = useState<Workout>();
     const [showError, setShowError] = useState<boolean>(false);
 

@@ -22,6 +22,5 @@ export default function Login() {
                 </a>
             </div>
         </main>
-        
     )
   }

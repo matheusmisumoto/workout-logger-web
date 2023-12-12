@@ -1,11 +1,5 @@
 import { jwtDecode } from "jwt-decode";
-
-interface User {
-  sub: string;
-  name: string;
-  picture: string;
-  roles: string;
-}
+import { UserToken } from "./interface";
 
 export function hasToken() {
   if (typeof window !== "undefined") {
@@ -28,7 +22,7 @@ export function getUser(){
       throw new Error('Unautenticated')
     }
 
-    const user: User = jwtDecode(token)
+    const user: UserToken = jwtDecode(token)
     return user
   }
 }

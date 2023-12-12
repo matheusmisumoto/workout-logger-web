@@ -8,6 +8,13 @@ export interface User {
     totalLifted: number
 }
 
+export interface UserToken {
+    sub: string;
+    name: string;
+    picture: string;
+    roles: string;
+}
+
 export interface LastWorkouts {
     id: string,
     user: string,

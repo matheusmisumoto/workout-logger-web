@@ -19,29 +19,22 @@ function formatDate(date: Date, short?: boolean) {
     if(short) {
         return new Date(date).toLocaleString('pt-BR',
                                             {
-                                                year: 'numeric',
-                                                month: 'short',
-                                                day: 'numeric'
-                                            }) 
-                + ', ' + 
-                new Date(date).toLocaleTimeString('pt-BR',
-                                            {
-                                                hour: '2-digit',
-                                                minute: '2-digit'
+                                                dateStyle: 'medium',
+                                                timeStyle: 'short',
+                                                timeZone: 'America/Sao_Paulo'
                                             });
     }
 
     return new Date(date).toLocaleString('pt-BR',
                                             {
-                                                year: 'numeric',
-                                                month: 'long',
-                                                day: 'numeric'
+                                                dateStyle: 'long',
+                                                timeZone: 'America/Sao_Paulo'
                                             }) 
             + ', ' + 
             new Date(date).toLocaleTimeString('pt-BR',
                                             {
-                                                hour: '2-digit',
-                                                minute: '2-digit'
+                                                timeStyle: 'short',
+                                                timeZone: 'America/Sao_Paulo'
                                             });
 }
 

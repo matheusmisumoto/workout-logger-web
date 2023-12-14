@@ -39,6 +39,7 @@ export default function Workout({ params }: { params: { workoutid: string } }){
                 muscles.push(dictionary.muscles[exercise.target as keyof typeof dictionary.muscles]);
             }
         });
+        muscles = Array.from(new Set(muscles));
         return muscles.join(', ');
     }
 

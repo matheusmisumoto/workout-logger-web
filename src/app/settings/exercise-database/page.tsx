@@ -45,6 +45,7 @@ export default function ExerciseDatabase() {
     }
 
     const addExercise = () => {
+        if(!newExercise.name || !newExercise.target || !newExercise.equipment) return;
         apiWithAuth(getToken()).post('/exercises', newExercise).then(response => {
             setNewExercise(initial);
             getExercises();
@@ -62,19 +63,25 @@ export default function ExerciseDatabase() {
                 <MainContent>
                     <h2 className="my-4 text-3xl font-bold max-w-screen-md mx-auto">Biblioteca de exercícios</h2>
                     <div className="flex flex-col p-4 pb-0 max-w-screen-md mx-auto bg-white/10 rounded-lg">
-                        <input type="text" className="bg-transparent bg-black rounded-md mb-3 p-3 text-white text-sm" placeholder="Novo exercício" name="name" onChange={(e) => updateForm("name", e.target.value)} />
-                        <select className="bg-black rounded-md mb-3 p-3 text-white text-sm" name="target" onChange={(e) => updateForm("target", e.target.value)}>
+                        <input type="text" className="bg-transparent bg-black rounded-md mb-3 p-3 text-white text-sm" placeholder="Novo exercício" name="name" value={newExercise.name} onChange={(e) => updateForm("name", e.target.value)} />
+                        <select className="bg-black rounded-md mb-3 p-3 text-white text-sm" name="target" value={newExercise.target} onChange={(e) => updateForm("target", e.target.value)}>
+                            <option value="" hidden disabled>Selecione um músculo</option>
                             {
-                                Object.keys(dictionary.muscles).map((muscle, index) => {
-                                    return <option key={index} value={muscle}>{dictionary.muscles[muscle as keyof typeof dictionary.muscles]}</option>
-                                })
+                                Object.keys(dictionary.muscles)
+                                    .sort((a, b) => dictionary.muscles[a as keyof typeof dictionary.muscles].localeCompare(dictionary.muscles[b as keyof typeof dictionary.muscles]))
+                                    .map((muscle, index) => {
+                                        return <option key={index} value={muscle}>{dictionary.muscles[muscle as keyof typeof dictionary.muscles]}</option>
+                                    })
                             }
                         </select>
-                        <select className="bg-black rounded-md p-3 text-white text-sm" name="equipment" onChange={(e) => updateForm("equipment", e.target.value)}>
+                        <select className="bg-black rounded-md p-3 text-white text-sm" name="equipment" value={newExercise.equipment} onChange={(e) => updateForm("equipment", e.target.value)}>
+                            <option value="" hidden disabled>Selecione um equipamento</option>
                             {
-                                Object.keys(dictionary.equipment).map((equipment, index) => {
-                                    return <option key={index} value={equipment}>{dictionary.equipment[equipment as keyof typeof dictionary.equipment]}</option>
-                                })
+                                Object.keys(dictionary.equipment)
+                                    .sort((a, b) => dictionary.equipment[a as keyof typeof dictionary.equipment].localeCompare(dictionary.equipment[b as keyof typeof dictionary.equipment]))
+                                    .map((equipment, index) => {
+                                        return <option key={index} value={equipment}>{dictionary.equipment[equipment as keyof typeof dictionary.equipment]}</option>
+                                    })
                             }
                         </select>
                         <Button link="#" title="Adicionar exercício" action={() => addExercise()} primary />

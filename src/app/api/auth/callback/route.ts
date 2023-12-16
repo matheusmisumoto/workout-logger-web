@@ -5,6 +5,10 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const code = searchParams.get('code')
 
+  if(searchParams.has('error')) {
+    return NextResponse.redirect('http://'+ request.headers.get('host'))
+  }  
+
   const registerResponse = await api.post('/auth/oauth', {
     code,
   })

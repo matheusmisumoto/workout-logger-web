@@ -67,7 +67,7 @@ export default function ExerciseDatabase() {
             <Main>
                 <MainContent>
                     {
-                        !checkPermission ?
+                        checkPermission ?
                             <>
                                 <h2 className="my-4 text-3xl font-bold max-w-screen-md mx-auto">Biblioteca de exercícios</h2>
                                 <div className="flex flex-col p-4 pb-0 max-w-screen-md mx-auto bg-white/10 rounded-lg">

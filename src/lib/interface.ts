@@ -15,6 +15,22 @@ export interface UserToken {
     roles: string;
 }
 
+export interface UserList {
+    id: string,
+    username: string,
+    name: string,
+    login: string,
+    oAuthId: number,
+    avatarUrl: string,
+    joinedAt: Date,
+    oauthProvider: string
+    authorities: UserListAutorities[]
+}
+
+export interface UserListAutorities {
+    authority: string
+}
+
 export interface LastWorkouts {
     id: string,
     user: string,

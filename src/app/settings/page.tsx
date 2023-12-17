@@ -35,9 +35,10 @@ export default async function SettingsPage() {
                 </Hero>
                 <MainContent>
                     {
-                        profile?.roles == "ROLE_ADMIN" &&
+                        profile.roles == "ROLE_ADMIN" &&
                             <MenuCard>
                                 <MenuLink link="/settings/exercise-database" title="Gerenciar exercícios" />
+                                <MenuLink link="/settings/manage-users" title="Gerenciar usuários" />
                             </MenuCard>
                     }
                     <MenuCard>

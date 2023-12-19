@@ -13,7 +13,7 @@ import dictionary from "@/dictionaries/pt-BR.json";
 import { calculate1RM, formatDate } from "@/lib/util"
 import { getUser, getToken } from "@/lib/auth"
 
-export default function TrackWorkout({ params } : { params?: { workoutid: string }}){
+export default function TrackWorkout({ params, template } : { params?: { workoutid: string }, template? : boolean }){
 
     const [workout, setWorkout] = useState<Workout>()
     const [modals, setModals] = useState<Modal>()
@@ -31,7 +31,23 @@ export default function TrackWorkout({ params } : { params?: { workoutid: string
 
         if(params?.workoutid) {
             apiWithAuth(getToken()).get('workouts/user/' + getUser()?.sub + '/' + params.workoutid).then(response => {
-                setWorkout(response.data);
+                const createWorkout: Workout = response.data
+                
+                // remove weight and reps if the new workout is from template or history
+                if(template) {
+                    createWorkout.user = getUser()?.sub!,
+                    createWorkout.name = '';
+                    createWorkout.duration = undefined;
+                    createWorkout.comment = '';
+                    createWorkout.status = 'IN_PROGRESS';
+                    createWorkout.exercises.forEach((exercise) => {
+                        exercise.sets.forEach((set) => {
+                            set.weight = 0;
+                            set.reps = 0;
+                        })
+                    })
+                }
+                setWorkout(createWorkout);
             });
         } else if(workoutStorage && workoutStorage !== "undefined") {
             const workoutStorageParsed: Workout = JSON.parse(workoutStorage!);
@@ -47,7 +63,7 @@ export default function TrackWorkout({ params } : { params?: { workoutid: string
             setWorkout(initial);
         }
         
-    }, [params?.workoutid]);
+    }, [params?.workoutid, template]);
 
     useEffect(() => {
         if(workout) {
@@ -143,7 +159,7 @@ export default function TrackWorkout({ params } : { params?: { workoutid: string
 
     const finishWorkout = () => {
         if (workout) {
-            if(params?.workoutid) {
+            if(params?.workoutid && !template) {
                 apiWithAuth(getToken()).put('workouts/' + params.workoutid, workout).then(response => {
                     localStorage.removeItem('workoutDraft');
                     window.location.href = '/dashboard';

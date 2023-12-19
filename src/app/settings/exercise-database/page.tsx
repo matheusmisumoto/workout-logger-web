@@ -113,7 +113,7 @@ export default function ExerciseDatabase() {
                                         })
                                     }
                                 </ul>
-`                            </>
+                            </>
                         :
                             <ErrorMessage message="Você não tem permissão para acessar essa página" />
                     }   

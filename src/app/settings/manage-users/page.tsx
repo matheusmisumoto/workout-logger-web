@@ -5,7 +5,6 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Main from "@/components/Main";
 import MainContent from "@/components/MainContent";
-import ErrorIcon from "@/components/icons/ErrorIcon";
 import RemoveIcon from "@/components/icons/RemoveIcon";
 import { apiWithAuth } from "@/lib/api";
 import { getToken, getUser } from "@/lib/auth";
@@ -60,11 +59,16 @@ export default function UserManagement() {
                                                 <li key={index} className="py-4 flex items-center border-b border-white/50">
                                                     <div className="flex-1">
                                                         <p className="font-bold">{member.name}</p>
-                                                        <p className="text-[.75rem]"><strong>Login: </strong>{member.login}</p>
+                                                        <p className="text-[.75rem]"><strong>Username: </strong>{member.login}</p>
                                                         <p className="text-[.75rem]"><strong>Nível: </strong>{getRole(member.authorities)}</p>
                                                     </div>
                                                     <div>
-                                                        <RemoveIcon className="h-6 w-auto fill-destructive/80" onClick={() => removeUser(member.id)} />
+                                                        {
+                                                            (getUser()?.sub !== member.id && member.authorities[0].authority !== 'ROLE_ADMIN') ?
+                                                                <RemoveIcon className="h-6 w-auto fill-destructive/80" onClick={() => removeUser(member.id)} />
+                                                            :
+                                                                <></>
+                                                        }
                                                     </div>
                                                 </li>
                                             )

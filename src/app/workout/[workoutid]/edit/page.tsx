@@ -157,8 +157,12 @@ export default function TrackWorkout({ params, template } : { params?: { workout
         
     }
 
+    let disableSubmit = false;
+
     const finishWorkout = () => {
-        if (workout) {
+        if(disableSubmit) return;
+        if (workout && workout.exercises.length > 0) {
+            disableSubmit = true;
             if(params?.workoutid && !template) {
                 apiWithAuth(getToken()).put('workouts/' + params.workoutid, workout).then(response => {
                     localStorage.removeItem('workoutDraft');
@@ -176,7 +180,7 @@ export default function TrackWorkout({ params, template } : { params?: { workout
 
     return (
     <div className="h-full flex flex-col relative">
-        <Header navigationTitle="Voltar" actionTitle="Finalizar" action={(e) => { if(workout!.exercises.length > 0) { setModals({type: 'finishWorkout'}) } } } />
+        <Header navigationTitle="Voltar" actionTitle="Finalizar" action={(e) => { if(workout!.exercises.length > 0 && workout?.exercises !== undefined) { setModals({type: 'finishWorkout'}) } } } />
         <Main>
             <MainContent>
             {

@@ -77,7 +77,7 @@ export default function Dashboard() {
                                     )
                                 })
                             :
-                            <p className="text-sm mt-4 text-white/25">Você não possui treinos registrados.</p>
+                            <p className="text-sm mt-4 text-white/25 max-w-screen-md mx-auto">Você não possui treinos registrados.</p>
                         :
                         <>
                             <Card loading />

@@ -2,13 +2,14 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Main from "@/components/Main";
 import MainContent from "@/components/MainContent";
+import { api } from "@/lib/api";
 import { UserToken } from "@/lib/interface";
 import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
-import Image from 'next/image'
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
-export default async function DeleteAccountPage() {
+export default function DeleteAccountPage() {
     
     const token = cookies().get('token')?.value;
     if(!token) redirect('/');
@@ -26,8 +27,8 @@ export default async function DeleteAccountPage() {
                     </div>
                 </MainContent>
                 <div className="px-6 mb-6">
-                    <a href="/api/auth/logout" className="rounded-xl bg-white/5 text-destructive text-md font-bold text-center py-3 mt-4 mb-2 block w-full max-w-screen-md mx-auto">Excluir conta</a>
-                    <a href="/settings" className="rounded-xl text-center py-3 block w-full max-w-screen-md mx-auto">Agora não</a>
+                    <Link href="/api/auth/delete-account" className="rounded-xl bg-white/5 text-destructive text-md font-bold text-center py-3 mt-4 mb-2 block w-full max-w-screen-md mx-auto">Excluir conta</Link>
+                    <Link href="/settings" className="rounded-xl text-center py-3 block w-full max-w-screen-md mx-auto">Agora não</Link>
                 </div>
             </Main>
             <Footer />

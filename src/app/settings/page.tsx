@@ -41,9 +41,12 @@ export default async function SettingsPage() {
                                 <MenuLink link="/settings/manage-users" title="Gerenciar usuários" />
                             </MenuCard>
                     }
-                    <MenuCard>
-                        <MenuLink link="/settings/delete-account/" title="Excluir conta" />
-                    </MenuCard>
+                    {
+                        profile.roles !== "ROLE_DEMO" &&
+    	                    <MenuCard>
+                                <MenuLink link="/settings/delete-account/" title="Excluir conta" />
+                            </MenuCard>
+                    }
                     <MenuCard>
                         <MenuLink link="https://github.com/matheusmisumoto/workout-logger-web" title="Repositório da aplicação no GitHub" />
                         <MenuLink link="https://github.com/matheusmisumoto/workout-logger-api" title="Repositório da API no GitHub" />

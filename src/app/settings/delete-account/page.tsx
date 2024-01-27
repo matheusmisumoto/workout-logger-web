@@ -2,7 +2,6 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Main from "@/components/Main";
 import MainContent from "@/components/MainContent";
-import { api } from "@/lib/api";
 import { UserToken } from "@/lib/interface";
 import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
@@ -13,7 +12,9 @@ export default function DeleteAccountPage() {
     
     const token = cookies().get('token')?.value;
     if(!token) redirect('/');
+
     const profile: UserToken = jwtDecode(token);
+    if(profile.roles !== "ROLE_DEMO") redirect('/')
 
     return (
         <div className="h-full flex flex-col">

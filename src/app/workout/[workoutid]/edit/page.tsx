@@ -161,7 +161,11 @@ export default function TrackWorkout({ params, template } : { params?: { workout
 
     const finishWorkout = () => {
         if(disableSubmit) return;
-        if (workout && workout.exercises.length > 0) {
+        if (workout && 
+                (workout.exercises.length > 0 
+                    && workout?.exercises[0].sets[0].reps 
+                    && workout?.exercises[0].sets[0].reps > 0)
+            ) {
             disableSubmit = true;
             if(params?.workoutid && !template) {
                 apiWithAuth(getToken()).put('workouts/' + params.workoutid, workout).then(response => {
@@ -180,7 +184,7 @@ export default function TrackWorkout({ params, template } : { params?: { workout
 
     return (
     <div className="h-full flex flex-col relative">
-        <Header navigationTitle="Voltar" actionTitle="Finalizar" action={(e) => { if(workout!.exercises.length > 0 && workout?.exercises !== undefined) { setModals({type: 'finishWorkout'}) } } } />
+        <Header navigationTitle="Voltar" actionTitle="Finalizar" action={(e) => { setModals({type: 'finishWorkout'}) } } />
         <Main>
             <MainContent>
             {
@@ -215,9 +219,9 @@ export default function TrackWorkout({ params, template } : { params?: { workout
                                                             }
                                                         </select>
                                                     </td>
-                                                    <td className="w-4/12 text-right pb-2 text-white/50"><input type="number" min={0} name="weight" inputMode="decimal" className="text-sm text-right bg-white/10 text-white mr-2 py-1 px-2 w-12 inline align-middle" defaultValue={weight} onChange={(e) => updateSet(indexExercise, indexSet, 'weight', Number(e.target.value))} />kg</td>
+                                                    <td className="w-4/12 text-right pb-2 text-white/50"><input type="number" min={0} max={999} name="weight" inputMode="decimal" className="text-sm text-right bg-white/10 text-white mr-2 py-1 px-2 w-12 inline align-middle" defaultValue={weight} onChange={(e) => updateSet(indexExercise, indexSet, 'weight', Number(e.target.value))} />kg</td>
                                                     <td className="w-1/12 text-center pb-2 text-white/50">X</td>
-                                                    <td className="w-4/12 text-center pb-2 text-white/50"><input type="number" min={0} name="reps" inputMode="numeric" className="text-sm bg-white/10 text-white mr-2 py-1 px-2 w-8 align-middle" defaultValue={reps} onChange={(e) => updateSet(indexExercise, indexSet, 'reps', Number(e.target.value))} />reps</td>
+                                                    <td className="w-4/12 text-center pb-2 text-white/50"><input type="number" min={0} max={99} name="reps" inputMode="numeric" className="text-sm bg-white/10 text-white mr-2 py-1 px-2 w-8 align-middle" defaultValue={reps} onChange={(e) => updateSet(indexExercise, indexSet, 'reps', Number(e.target.value))} />reps</td>
                                                     <td className="w-1/12 text-center pb-2 pl-2"><RemoveIcon className="h-4 w-auto fill-destructive/80" onClick={() => deleteSet(indexExercise, indexSet)} /></td>
                                                 </tr>
                                             )
@@ -240,7 +244,7 @@ export default function TrackWorkout({ params, template } : { params?: { workout
             <div className="modal-background absolute m-auto right-0 bottom-0 left-0 w-full h-full bg-black/80">
                 {
                 (modals.type == "addExercise") && 
-                <div className="modal absolute flex flex-col m-auto right-0 bottom-0 left-0 w-full max-w-screen-md mx-auto h-3/6 bg-secondary rounded-t-3xl">
+                <div className="modal absolute flex flex-col m-auto right-0 bottom-0 left-0 w-full max-w-screen-md mx-auto h-5/6 bg-secondary rounded-t-3xl">
                     <div className="flex">
                         <h2 className="text-2xl font-bold m-6 mb-2 flex-1">Selecionar exercício</h2>
                         <RemoveIcon className="m-6 mb-2 fill-white" onClick={() => closeModal()} />
@@ -350,6 +354,11 @@ export default function TrackWorkout({ params, template } : { params?: { workout
                 {
                 (modals.type == "finishWorkout") && 
                 <div className="modal absolute flex flex-col m-auto right-0 bottom-0 left-0 w-full max-w-screen-md mx-auto h-3/6 bg-secondary rounded-t-3xl">
+                    {
+                        (workout && workout.exercises.length > 0
+                            && workout?.exercises[0].sets[0].reps 
+                            && workout?.exercises[0].sets[0].reps > 0) ?
+                    <>
                     <div className="flex">
                         <h2 className="text-2xl font-bold m-6 mb-2 flex-1">Dados do treino</h2>
                         <RemoveIcon className="m-6 mb-2 fill-white" onClick={() => closeModal()} />
@@ -365,6 +374,18 @@ export default function TrackWorkout({ params, template } : { params?: { workout
                         <textarea name="workoutComment" className="text-md px-2 py-1 rounded-lg bg-black/50 w-full h-24 resize-none" placeholder="Comentário (opcional)" defaultValue={workout?.comment} onChange={(e) => addMetaData("comment", e.target.value)}></textarea>
                         <Button link="#" title="Finalizar treino" action={() => finishWorkout()} primary />
                     </div>
+                    </>
+                    :
+                    <>
+                    <div className="flex">
+                        <h2 className="text-2xl font-bold m-6 mb-2 flex-1">Dados do treino</h2>
+                        <RemoveIcon className="m-6 mb-2 fill-white" onClick={() => closeModal()} />
+                    </div>
+                    <div className="flex flex-col justify-center items-center h-full">
+                        <p className="text-center text-white/25 align-middle">Adicione pelo menos um set</p> 
+                    </div>
+                    </>
+                    }
                 </div>
                 }
             </div>

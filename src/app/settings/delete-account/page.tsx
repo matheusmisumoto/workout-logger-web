@@ -14,7 +14,7 @@ export default function DeleteAccountPage() {
     if(!token) redirect('/');
 
     const profile: UserToken = jwtDecode(token);
-    if(profile.roles !== "ROLE_DEMO") redirect('/')
+    if(profile.roles == "ROLE_DEMO") redirect('/')
 
     return (
         <div className="h-full flex flex-col">
@@ -28,7 +28,7 @@ export default function DeleteAccountPage() {
                     </div>
                 </MainContent>
                 <div className="px-6 mb-6">
-                    <Link href="/api/auth/delete-account" className="rounded-xl bg-white/5 text-destructive text-md font-bold text-center py-3 mt-4 mb-2 block w-full max-w-screen-md mx-auto">Excluir conta</Link>
+                    <a href="/api/auth/delete-account" className="rounded-xl bg-white/5 text-destructive text-md font-bold text-center py-3 mt-4 mb-2 block w-full max-w-screen-md mx-auto">Excluir conta</a>
                     <Link href="/settings" className="rounded-xl text-center py-3 block w-full max-w-screen-md mx-auto">Agora não</Link>
                 </div>
             </Main>

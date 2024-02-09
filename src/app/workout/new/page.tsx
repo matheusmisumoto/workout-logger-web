@@ -38,7 +38,6 @@ export default function NewWorkout() {
                             <MenuLink link="/workout/new/track" title="Iniciar treino vazio" subtitle="Adicione exercícios conforme treina" />
                     }
                         <MenuLink link="/workout/new/from-history" title="Usar treino anterior" subtitle="Use um treino do seu histórico" />
-                        <MenuLink link="#" title="Usar rotina" subtitle="Use um template salvo" disabled />
                     </MenuCard>
                 </MainContent>
             </Main>

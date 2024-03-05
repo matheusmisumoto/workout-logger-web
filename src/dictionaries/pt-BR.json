@@ -40,6 +40,7 @@
         "STANDARD": "Padrão",
         "DROP": "Drop",
         "NEGATIVE": "Negativo",
-        "REST_PAUSE": "Rest-Pause"
+        "REST_PAUSE": "Rest-Pause",
+        "DEAD_STOP": "Dead Stop"
     }
 }

@@ -8,7 +8,7 @@ import Header from "@/components/Header"
 import Main from "@/components/Main"
 import MainContent from "@/components/MainContent"
 import RemoveIcon from "@/components/icons/RemoveIcon"
-import { useState, useEffect, Fragment } from "react"
+import { useState, useEffect, Fragment, ChangeEvent } from "react"
 import dictionary from "@/dictionaries/pt-BR.json";
 import { calculate1RM, formatDate } from "@/lib/util"
 import { getUser, getToken } from "@/lib/auth"
@@ -90,8 +90,18 @@ export default function TrackWorkout({ params, template } : { params?: { workout
         }
     }
 
-    const updateSet = (indexExercise: number, indexSet: number, field: keyof Sets, value: number | string) => {
+    const updateSet = (indexExercise: number, indexSet: number, field: keyof Sets, value: number | string, event?: ChangeEvent<HTMLInputElement>) => {
         if (workout && workout.exercises && workout.exercises[indexExercise].sets) {
+            if(field === 'weight' && typeof value == 'number' && (value < 0  || value > 999)) {
+                event!.target.value = '';
+                value = 0;
+                alert('O peso deve ser maior que 0kg e menor que 1000kg')
+            }
+            else if(field === 'reps' && typeof value == 'number' && (value < 0 || value > 99)) {
+                event!.target.value = '';
+                value = 0;
+                alert('O número de repetições deve ser maior que 0 e menor que 100')
+            }
             const newWorkout = { ...workout };
 
             newWorkout.exercises[indexExercise].sets[indexSet] = {
@@ -219,9 +229,9 @@ export default function TrackWorkout({ params, template } : { params?: { workout
                                                             }
                                                         </select>
                                                     </td>
-                                                    <td className="w-4/12 text-right pb-2 text-white/50"><input type="number" min={0} max={999} name="weight" inputMode="decimal" className="text-sm text-right bg-white/10 text-white mr-2 py-1 px-2 w-12 inline align-middle" defaultValue={weight} onChange={(e) => updateSet(indexExercise, indexSet, 'weight', Number(e.target.value))} />kg</td>
+                                                    <td className="w-4/12 text-right pb-2 text-white/50"><input type="number" min={0} max={999} name="weight" inputMode="decimal" className="text-sm text-right bg-white/10 text-white mr-2 py-1 px-2 w-12 inline align-middle" defaultValue={weight} onChange={(e) => updateSet(indexExercise, indexSet, 'weight', Number(e.target.value), e)} />kg</td>
                                                     <td className="w-1/12 text-center pb-2 text-white/50">X</td>
-                                                    <td className="w-4/12 text-center pb-2 text-white/50"><input type="number" min={0} max={99} name="reps" inputMode="numeric" className="text-sm bg-white/10 text-white mr-2 py-1 px-2 w-8 align-middle" defaultValue={reps} onChange={(e) => updateSet(indexExercise, indexSet, 'reps', Number(e.target.value))} />reps</td>
+                                                    <td className="w-4/12 text-center pb-2 text-white/50"><input type="number" min={0} max={99} name="reps" inputMode="numeric" className="text-sm bg-white/10 text-white mr-2 py-1 px-2 w-8 align-middle" defaultValue={reps} onChange={(e) => updateSet(indexExercise, indexSet, 'reps', Number(e.target.value), e)} />reps</td>
                                                     <td className="w-1/12 text-center pb-2 pl-2"><RemoveIcon className="h-4 w-auto fill-destructive/80" onClick={() => deleteSet(indexExercise, indexSet)} /></td>
                                                 </tr>
                                             )

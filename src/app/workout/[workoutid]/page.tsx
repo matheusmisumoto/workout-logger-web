@@ -12,7 +12,7 @@ import WorkoutExercise from "@/components/WorkoutExercise"
 
 import { Fragment, useEffect, useState } from "react"
 import { apiWithAuth } from "@/lib/api"
-import { Workout, Exercise } from "@/lib/interface"
+import type { Workout, Exercise } from "@/lib/interface"
 import dictionary from "@/dictionaries/pt-BR.json";
 import { formatDate } from "@/lib/util"
 import { getToken, getUser } from "@/lib/auth"

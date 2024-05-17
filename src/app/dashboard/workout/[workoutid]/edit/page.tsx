@@ -1,7 +1,7 @@
 'use client'
 
 import { apiWithAuth } from "@/lib/api"
-import { ExerciseData, Modal, PreviousStats, Sets, Workout } from "@/lib/interface"
+import { ExerciseData, Modal, PreviousStats, Sets, UserToken, Workout } from "@/lib/interface"
 import Button from "@/components/Button"
 import ExerciseHeader from "@/components/ExerciseHeader"
 import Header from "@/components/Header"
@@ -11,9 +11,12 @@ import RemoveIcon from "@/components/icons/RemoveIcon"
 import { useState, useEffect, Fragment, ChangeEvent } from "react"
 import dictionary from "@/dictionaries/pt-BR.json";
 import { calculate1RM, formatDate } from "@/lib/util"
-import { getUser, getToken } from "@/lib/auth"
+import { jwtDecode } from "jwt-decode"
 
 export default function TrackWorkout({ params, template } : { params?: { workoutid: string }, template? : boolean }){
+
+    const token = document.cookie.split("; ").find((row) => row.startsWith("token="))?.split("=")[1];
+    const user: UserToken = jwtDecode(token!);
 
     const [workout, setWorkout] = useState<Workout>()
     const [modals, setModals] = useState<Modal>()
@@ -21,7 +24,7 @@ export default function TrackWorkout({ params, template } : { params?: { workout
     const [previousStats, setPreviousStats] = useState<PreviousStats>()
     
     useEffect(() => {
-        apiWithAuth(getToken()).get('exercises').then(response => {
+        apiWithAuth(token).get('exercises').then(response => {
             setExercises(response.data);
         }).catch(error => {
             console.log(error);
@@ -30,12 +33,12 @@ export default function TrackWorkout({ params, template } : { params?: { workout
         const workoutStorage = localStorage.getItem('workoutDraft');
 
         if(params?.workoutid) {
-            apiWithAuth(getToken()).get('workouts/user/' + getUser()?.sub + '/' + params.workoutid).then(response => {
+            apiWithAuth(token).get('workouts/user/' + user?.sub + '/' + params.workoutid).then(response => {
                 const createWorkout: Workout = response.data
                 
                 // remove weight and reps if the new workout is from template or history
                 if(template) {
-                    createWorkout.user = getUser()?.sub!,
+                    createWorkout.user = user?.sub!,
                     createWorkout.name = '';
                     createWorkout.duration = undefined;
                     createWorkout.comment = '';
@@ -56,14 +59,14 @@ export default function TrackWorkout({ params, template } : { params?: { workout
             }
         } else {
             const initial: Workout = {
-                user: getUser()?.sub!,
+                user: user?.sub!,
                 status: "IN_PROGRESS",
                 exercises: []
             }
             setWorkout(initial);
         }
         
-    }, [params?.workoutid, template]);
+    }, [params?.workoutid, template, token, user?.sub]);
 
     useEffect(() => {
         if(workout) {
@@ -160,7 +163,7 @@ export default function TrackWorkout({ params, template } : { params?: { workout
     }
 
     const getPreviousStats = (userid: string, exerciseid: string, type: string) => {
-            apiWithAuth(getToken()).get('workouts/user/' + userid + '/exercise/' + exerciseid).then(response => {
+            apiWithAuth(token).get('workouts/user/' + userid + '/exercise/' + exerciseid).then(response => {
                 setPreviousStats(response.data);
                 setModals({type: type, data: exerciseid}); 
             });
@@ -178,13 +181,13 @@ export default function TrackWorkout({ params, template } : { params?: { workout
             ) {
             disableSubmit = true;
             if(params?.workoutid && !template) {
-                apiWithAuth(getToken()).put('workouts/' + params.workoutid, workout).then(response => {
+                apiWithAuth(token).put('workouts/' + params.workoutid, workout).then(response => {
                     localStorage.removeItem('workoutDraft');
                     window.location.href = '/dashboard';
                 })
             } else {
                 workout.status = "COMPLETED";
-                apiWithAuth(getToken()).post('workouts', workout).then(response => {
+                apiWithAuth(token).post('workouts', workout).then(response => {
                     localStorage.removeItem('workoutDraft');
                     window.location.href = '/dashboard';
                 })

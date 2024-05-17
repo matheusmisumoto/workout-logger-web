@@ -1,5 +1,3 @@
-'use client'
-
 import { Sets } from "@/lib/interface"
 
 // Calculate One Rep Max using Brzycki formula    

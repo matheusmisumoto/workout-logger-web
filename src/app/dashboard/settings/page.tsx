@@ -17,8 +17,10 @@ export default async function SettingsPage() {
     if(!token) redirect('/');
     const profile: UserToken = jwtDecode(token);
 
+    const { version } = require('/package.json');
+
     return (
-        <div className="h-full flex flex-col">
+        <>
             <Header />
             <Main>
                 <Hero>
@@ -37,14 +39,14 @@ export default async function SettingsPage() {
                     {
                         profile.roles == "ROLE_ADMIN" &&
                             <MenuCard>
-                                <MenuLink link="/settings/exercise-database" title="Gerenciar exercícios" />
-                                <MenuLink link="/settings/manage-users" title="Gerenciar usuários" />
+                                <MenuLink link="/dashboard/settings/exercise-database" title="Gerenciar exercícios" />
+                                <MenuLink link="/dashboard/settings/manage-users" title="Gerenciar usuários" />
                             </MenuCard>
                     }
                     {
                         profile.roles !== "ROLE_DEMO" &&
     	                    <MenuCard>
-                                <MenuLink link="/settings/delete-account/" title="Excluir conta" />
+                                <MenuLink link="/dashboard/settings/delete-account/" title="Excluir conta" />
                             </MenuCard>
                     }
                     <MenuCard>
@@ -52,6 +54,7 @@ export default async function SettingsPage() {
                         <MenuLink link="https://github.com/matheusmisumoto/workout-logger-api" title="Repositório da API no GitHub" />
                         <MenuLink link="https://matheusmisumoto.dev" title="Visite meu site" />
                     </MenuCard>
+                    <p className="max-w-screen-md mx-auto text-center text-sm text-white/50">Versão { version }</p>
                     <p className="max-w-screen-md mx-auto text-center text-sm text-white/50">Desenvolvido por Matheus Misumoto</p>
                 </MainContent>
                 <div className="px-6 mb-6">
@@ -59,6 +62,6 @@ export default async function SettingsPage() {
                 </div>
             </Main>
             <Footer />
-        </div>
+        </>
     );
 }

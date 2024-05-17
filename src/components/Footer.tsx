@@ -15,19 +15,19 @@ export default function Footer() {
                         </Link>
                     </div>
                     <div className="flex-1">
-                        <Link href="/history">
+                        <Link href="/dashboard/history">
                             <HistoryIcon className="w-7 fill-white/50 block mx-auto" />
                             Histórico
                         </Link>
                     </div>
                     <div className="flex-1">
-                        <Link href="/workout/new">
+                        <Link href="/dashboard/workout/new">
                             <WorkoutIcon className="w-7 fill-white/50 block mx-auto" />
                             Treino
                         </Link>
                     </div>
                     <div className="flex-1">
-                        <Link href="/settings">
+                        <Link href="/dashboard/settings">
                             <ProfileIcon className="w-7 fill-white/50 block mx-auto" />
                             Perfil
                         </Link>

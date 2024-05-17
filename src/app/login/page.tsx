@@ -1,8 +1,11 @@
 import Image from 'next/image'
 import { Logo } from "@/components/icons/Logo"
 import bgLogo from '/public/bgLogin.webp'
+import { api } from '@/lib/api';
 
-export default function Login() {
+export default async function Login() {
+    const wakeUpApi = await api.get('/hello');
+  
     return (
         <main className="flex flex-col items-center justify-center min-h-full relative bg-brand gap-y-12 px-6 py-12 overflow-hidden login">
                 <Image src={bgLogo} alt="Workout Logger" fill className="object-cover absolute top-0 left-0 object-center opacity-20" />

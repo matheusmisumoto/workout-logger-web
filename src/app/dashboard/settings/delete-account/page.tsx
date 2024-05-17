@@ -2,22 +2,19 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Main from "@/components/Main";
 import MainContent from "@/components/MainContent";
-import { UserToken } from "@/lib/interface";
-import { jwtDecode } from "jwt-decode";
+import { getUser } from "@/lib/auth";
 import { cookies } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export default function DeleteAccountPage() {
-    
-    const token = cookies().get('token')?.value;
-    if(!token) redirect('/');
+    const token = cookies().get('token')?.value!;
 
-    const profile: UserToken = jwtDecode(token);
+    const profile = getUser(token);
     if(profile.roles == "ROLE_DEMO") redirect('/')
 
     return (
-        <div className="h-full flex flex-col">
+        <>
             <Header navigationTitle="Perfil" />
             <Main>
                 <MainContent>
@@ -29,10 +26,10 @@ export default function DeleteAccountPage() {
                 </MainContent>
                 <div className="px-6 mb-6">
                     <a href="/api/auth/delete-account" className="rounded-xl bg-white/5 text-destructive text-md font-bold text-center py-3 mt-4 mb-2 block w-full max-w-screen-md mx-auto">Excluir conta</a>
-                    <Link href="/settings" className="rounded-xl text-center py-3 block w-full max-w-screen-md mx-auto">Agora não</Link>
+                    <Link href="/dashboard/settings" className="rounded-xl text-center py-3 block w-full max-w-screen-md mx-auto">Agora não</Link>
                 </div>
             </Main>
             <Footer />
-        </div>
+        </>
     );
 }

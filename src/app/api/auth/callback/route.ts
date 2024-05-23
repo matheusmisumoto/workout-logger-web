@@ -6,7 +6,7 @@ export async function GET(request: NextRequest) {
   const code = searchParams.get('code')
 
   if(searchParams.has('error')) {
-    return NextResponse.redirect(request.url)
+    return NextResponse.redirect('http://'+ request.headers.get('host'))
   }  
 
   const registerResponse = await api.post('/auth/oauth', {
@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
 
   const { token } = registerResponse.data
 
-  const redirectURL = new URL('/', request.url)
+  const redirectURL = new URL('/', 'http://'+ request.headers.get('host'))
 
   const cookieExpiresInSeconds = 60 * 60 * 24 * 7
 

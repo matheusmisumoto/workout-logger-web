@@ -1,7 +1,6 @@
 'use server'
 
 import { revalidatePath } from "next/cache";
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { apiWithAuth } from "./api";
 
@@ -23,9 +22,8 @@ export async function addExercise(formData: FormData, token: string) {
 
     if (!newExercise.name || !newExercise.target || !newExercise.equipment) return;
 
-    const addAction = apiWithAuth(token).post('/exercises', newExercise);
+    const addAction = await apiWithAuth(token).post('/exercises', newExercise);
     revalidatePath('/dashboard/settings/exercise-database');
-    redirect('/dashboard/settings/exercise-database');
 }
 
 export async function deleteExercise(id: string, token: string) {

@@ -5,8 +5,8 @@ import { ExerciseData, Modal, PreviousStats, Sets, UserToken, Workout } from "@/
 import Button from "@/components/Button"
 import ExerciseHeader from "@/components/ExerciseHeader"
 import Header from "@/components/Header"
+import Scrollable from "@/components/Scrollable"
 import Main from "@/components/Main"
-import MainContent from "@/components/MainContent"
 import RemoveIcon from "@/components/icons/RemoveIcon"
 import { useState, useEffect, Fragment, ChangeEvent } from "react"
 import dictionary from "@/dictionaries/pt-BR.json";
@@ -198,8 +198,8 @@ export default function TrackWorkout({ params, template } : { params?: { workout
     return (
     <div className="h-full flex flex-col relative">
         <Header navigationTitle="Voltar" actionTitle="Finalizar" action={(e) => { setModals({type: 'finishWorkout'}) } } />
-        <Main>
-            <MainContent>
+        <Scrollable>
+            <Main>
             {
                 workout?.exercises?.length === 0 ? 
                     <div className="flex flex-col justify-center items-center h-full">
@@ -251,7 +251,7 @@ export default function TrackWorkout({ params, template } : { params?: { workout
                     )
                 })
             }
-            </MainContent>
+            </Main>
             {
             (modals?.type) &&
             <div className="modal-background absolute m-auto right-0 bottom-0 left-0 w-full h-full bg-black/80">
@@ -403,7 +403,7 @@ export default function TrackWorkout({ params, template } : { params?: { workout
                 }
             </div>
             }
-        </Main>
+        </Scrollable>
         <div className="px-6 mb-8 static">
                 <Button link="#" action={() => setModals({type: 'addExercise'})} title="Adicionar Exercício" primary />
         </div>

@@ -1,7 +1,7 @@
 import Card from "@/components/Card";
 import Header from "@/components/Header";
+import Scrollable from "@/components/Scrollable";
 import Main from "@/components/Main";
-import MainContent from "@/components/MainContent";
 import { Suspense } from "react";
 import { apiWithAuth } from "@/lib/api";
 import { LastWorkouts } from "@/lib/interface";
@@ -25,8 +25,8 @@ export default async function WorkoutHistoryPage(props: any) {
                 :
                     <Header />
             }
-            <Main>
-                <MainContent>
+            <Scrollable>
+                <Main>
                     <h2 className="my-4 text-3xl font-bold max-w-screen-md mx-auto">Histórico de treinos</h2>
                     {
                         <Suspense fallback={
@@ -65,8 +65,8 @@ export default async function WorkoutHistoryPage(props: any) {
                             }
                         </Suspense>
                     }
-                </MainContent>
-            </Main>
+                </Main>
+            </Scrollable>
             <Footer />
         </>
     );

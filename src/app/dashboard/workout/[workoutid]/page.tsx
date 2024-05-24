@@ -5,8 +5,8 @@ import BoxItem from "@/components/BoxItem"
 import Button from "@/components/Button"
 import Header from "@/components/Header"
 import Hero from "@/components/Hero"
+import Scrollable from "@/components/Scrollable"
 import Main from "@/components/Main"
-import MainContent from "@/components/MainContent"
 import WorkoutExercise from "@/components/WorkoutExercise"
 
 import { Fragment, Suspense } from "react"
@@ -40,7 +40,7 @@ export default async function Workout({ params }: { params: { workoutid: string 
     return (
         <>
             <Header navigationTitle="Voltar" />
-            <Main>
+            <Scrollable>
                 <Suspense fallback={
                     <div className="flex flex-col justify-center items-center h-full">
                         <p className="text-center text-white/25 align-middle">Carregando</p>
@@ -63,7 +63,7 @@ export default async function Workout({ params }: { params: { workoutid: string 
                             <BoxItem data={workoutView?.totalLifted + ` kg`} description="carga total" />
                         </Box>
                     </Hero>
-                    <MainContent>
+                    <Main>
                         {
                             workoutView?.exercises.map((exercise: Exercise) => {
                                 let targetFormat = dictionary.muscles[exercise.target as keyof typeof dictionary.muscles]
@@ -91,9 +91,9 @@ export default async function Workout({ params }: { params: { workoutid: string 
                         <form action={deleteWorkout.bind(null, workoutView.id!, token)}>
                             <button className="rounded-xl bg-white/5 text-destructive text-md text-center py-3 my-4 block w-full max-w-screen-md mx-auto" id={workoutView.id!}>Remover treino</button>
                         </form>
-                    </MainContent>
+                    </Main>
                 </Suspense>
-            </Main>
+            </Scrollable>
             <Footer />
         </>
     )

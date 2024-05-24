@@ -1,6 +1,6 @@
 import Header from "@/components/Header";
+import Scrollable from "@/components/Scrollable";
 import Main from "@/components/Main";
-import MainContent from "@/components/MainContent";
 import AdminListItem from "@/components/AdminListItem";
 import { apiWithAuth } from "@/lib/api";
 import { getUser } from "@/lib/auth";
@@ -19,8 +19,8 @@ export default async function UserManagement() {
     return (
         <>
             <Header navigationTitle="Perfil" />
-            <Main>
-                <MainContent>
+            <Scrollable>
+                <Main>
                     <h2 className="my-4 text-3xl font-bold max-w-screen-md mx-auto">Lista de Membros</h2>
                     <ul className="mt-6 max-w-screen-md mx-auto">
                         {
@@ -31,8 +31,8 @@ export default async function UserManagement() {
                             })
                         }
                     </ul>
-                </MainContent>
-            </Main>
+                </Main>
+            </Scrollable>
             <Footer />
         </>
     );

@@ -36,4 +36,16 @@ function formatDate(date: Date, short?: boolean) {
                                             });
 }
 
-export { calculate1RM, formatDate }
+// Format total lifted number
+
+function formatTotalLifted(num: number) {
+    if(num > 1000000000) {
+        return (num/1000000000).toFixed(2) + 'B';
+    }
+    if(num > 1000000) {
+        return (num/1000000).toFixed(2) + 'M';
+    }
+    return num;
+}
+
+export { calculate1RM, formatDate, formatTotalLifted }

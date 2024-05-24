@@ -1,13 +1,9 @@
 import { ReactNode } from "react"
 
-type MainProps = {
-    children: ReactNode;
-}
-
-export default function Main({ children }: MainProps) {
+export default function Main({ children }: { children: ReactNode }) {
     return (
-        <main className="bg-black text-white flex-1 flex flex-col overflow-x-hidden">
+        <div className="p-6 flex-1">
             {children}
-        </main>
+        </div>
     )
 }

@@ -1,8 +1,8 @@
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
+import Scrollable from "@/components/Scrollable";
 import Main from "@/components/Main";
-import MainContent from "@/components/MainContent";
 import MenuCard from "@/components/MenuCard";
 import MenuLink from "@/components/MenuLink";
 import { UserToken } from "@/lib/interface";
@@ -22,7 +22,7 @@ export default async function SettingsPage() {
     return (
         <>
             <Header />
-            <Main>
+            <Scrollable>
                 <Hero>
                     <div className="flex max-w-screen-md mx-auto gap-4">
                         {
@@ -35,7 +35,7 @@ export default async function SettingsPage() {
                         </div>
                     </div>
                 </Hero>
-                <MainContent>
+                <Main>
                     {
                         profile.roles == "ROLE_ADMIN" &&
                             <MenuCard>
@@ -56,11 +56,11 @@ export default async function SettingsPage() {
                     </MenuCard>
                     <p className="max-w-screen-md mx-auto text-center text-sm text-white/50">Versão { version }</p>
                     <p className="max-w-screen-md mx-auto text-center text-sm text-white/50">Desenvolvido por Matheus Misumoto</p>
-                </MainContent>
+                </Main>
                 <div className="px-6 mb-6">
                     <a href="/api/auth/logout" className="rounded-xl bg-white/5 text-destructive text-md text-center py-3 my-4 block w-full max-w-screen-md mx-auto">Sair</a>
                 </div>
-            </Main>
+            </Scrollable>
             <Footer />
         </>
     );

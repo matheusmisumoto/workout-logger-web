@@ -3,10 +3,10 @@ import BoxItem from "@/components/BoxItem";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
+import Scrollable from "@/components/Scrollable";
 import Main from "@/components/Main";
-import MainContent from "@/components/MainContent";
 import { apiWithAuth } from "@/lib/api";
-import { User, LastWorkouts } from "../../lib/interface";
+import { User, LastWorkouts } from "../../../lib/interface";
 import dictionary from "@/dictionaries/pt-BR.json";
 import { formatDate } from "@/lib/util";
 import { getUser } from "@/lib/auth";
@@ -16,7 +16,6 @@ import Footer from "@/components/Footer";
 
 export default async function Dashboard() {
     const token: string = cookies().get('token')?.value!;
-    
     const fetchUser = await apiWithAuth(token).get('users/' + getUser(token)?.sub );
     const user: User = fetchUser.data;
     const fetchLastWorkouts = await apiWithAuth(token).get('workouts/user/' + getUser(token)?.sub + '/last');
@@ -25,7 +24,7 @@ export default async function Dashboard() {
     return (
         <>
             <Header />
-            <Main>
+            <Scrollable>
                 <Hero>
                     <h1 className="text-3xl text-white max-w-screen-md mx-auto">
                         Let&apos;s go, 
@@ -50,7 +49,7 @@ export default async function Dashboard() {
                     </Suspense>
                     </Box>
                 </Hero>
-                <MainContent>
+                <Main>
                     <h2 className="mb-3 text-2xl font-bold max-w-screen-md mx-auto">Últimos treinos</h2>
                         {
                             <Suspense fallback={<><Card loading /><Card loading /></>}>
@@ -77,8 +76,8 @@ export default async function Dashboard() {
                                 }
                             </Suspense>
                         }
-                </MainContent>
-            </Main>
+                </Main>
+            </Scrollable>
             <Footer />
         </>
     );

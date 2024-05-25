@@ -8,7 +8,17 @@ export function RemoveButton({action, id}: {action: () => Promise<void>, id: str
     return <form action={action}><button><RemoveIcon className="h-6 w-auto fill-destructive/80" /></button></form>
 }
 
-export default function AdminListItem({member, exercise, token}: {member?: UserList, exercise?: ExerciseData, token: string}) {
+export default function AdminListItem({member, exercise, token, loading}: {member?: UserList, exercise?: ExerciseData, token?: string, loading?: boolean}) {
+
+    if(loading) return (
+        <li className="animate-pulse py-3 flex items-center border-b border-white/50">
+            <div className="flex-1">
+                <div className="h-4 my-1 bg-white/20 rounded-full w-2/4"></div>
+                <div className="h-3 my-2 bg-white/20 rounded-full w-1/4"></div>
+                <div className="h-3 my-2 bg-white/20 rounded-full w-1/4"></div>
+            </div>
+        </li>
+    )
     
     const getRole = (roles: UserListAutorities[]) => {
         if(roles[0].authority === 'ROLE_ADMIN') return 'Administrador';
@@ -47,11 +57,11 @@ export default function AdminListItem({member, exercise, token}: {member?: UserL
             </div>
             <div>
                 {
-                    (member && getUser(token)?.sub !== member.id && member.authorities[0].authority !== 'ROLE_ADMIN') ?
-                        <RemoveButton action={deleteUser.bind(null, member.id, token)} id={member.id} />
+                    (member && getUser(token!)?.sub !== member.id && member.authorities[0].authority !== 'ROLE_ADMIN') ?
+                        <RemoveButton action={deleteUser.bind(null, member.id, token!)} id={member.id} />
                     :
                     (exercise) &&
-                        <RemoveButton action={deleteExercise.bind(null, exercise.id!, token)} id={exercise.id!} />
+                        <RemoveButton action={deleteExercise.bind(null, exercise.id!, token!)} id={exercise.id!} />
                 }
             </div>
         </li>    

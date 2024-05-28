@@ -10,6 +10,7 @@ import { getUser } from "@/lib/auth";
 import { cookies } from "next/headers";
 import dictionary from "@/dictionaries/pt-BR.json";
 import Footer from "@/components/Footer";
+import Loading from "./loading";
 
 export default async function WorkoutHistoryPage(props: any) {
     const token: string = cookies().get('token')?.value!;
@@ -27,44 +28,36 @@ export default async function WorkoutHistoryPage(props: any) {
             }
             <Scrollable>
                 <Main>
-                    <h2 className="my-4 text-3xl font-bold max-w-screen-md mx-auto">Histórico de treinos</h2>
-                    {
-                        <Suspense fallback={
-                            <>
-                                <Card loading />
-                                <Card loading />
-                                <Card loading />
-                            </>
-                        }>
-                            {
-                                workoutHistory.length > 0 ?
-                                    workoutHistory.map((workout: LastWorkouts) => {
-                                        let link;
-                                        let musclesList = workout.target?.map((target: string) => {
-                                            return dictionary.muscles[target as keyof typeof dictionary.muscles];
-                                        }).join(', ');
-                                        if (props.templateType === 'previous') {
-                                            link = `/dashboard/workout/new/from-history/${workout.id}`
-                                        } else {
-                                            link = `/dashboard/workout/${workout.id}`
-                                        }
-                                        return (
-                                            <Card 
-                                                key={workout.id} 
-                                                title={workout.name ? workout.name : formatDate(workout.date, true)} 
-                                                subtitle={musclesList} 
-                                                exercises={workout.totalExercises} 
-                                                time={workout.duration} 
-                                                weight={workout.totalLifted} 
-                                                link={link}
-                                            />
-                                        )
-                                    })
-                                : 
-                                <p className="text-sm mt-4 text-white/25 max-w-screen-md mx-auto">Você não possui treinos registrados.</p>
-                            }
-                        </Suspense>
-                    }
+                    <Suspense fallback={<Loading />}>
+                        <h2 className="my-4 text-3xl font-bold max-w-screen-md mx-auto">Histórico de treinos</h2>
+                        {
+                            workoutHistory.length > 0 ?
+                                workoutHistory.map((workout: LastWorkouts) => {
+                                    let link;
+                                    let musclesList = workout.target?.map((target: string) => {
+                                        return dictionary.muscles[target as keyof typeof dictionary.muscles];
+                                    }).join(', ');
+                                    if (props.templateType === 'previous') {
+                                        link = `/dashboard/workout/new/from-history/${workout.id}`
+                                    } else {
+                                        link = `/dashboard/workout/${workout.id}`
+                                    }
+                                    return (
+                                        <Card 
+                                            key={workout.id} 
+                                            title={workout.name ? workout.name : formatDate(workout.date, true)} 
+                                            subtitle={musclesList} 
+                                            exercises={workout.totalExercises} 
+                                            time={workout.duration} 
+                                            weight={workout.totalLifted} 
+                                            link={link}
+                                        />
+                                    )
+                                })
+                            : 
+                            <p className="text-sm mt-4 text-white/25 max-w-screen-md mx-auto">Você não possui treinos registrados.</p>
+                        }
+                    </Suspense>
                 </Main>
             </Scrollable>
             <Footer />

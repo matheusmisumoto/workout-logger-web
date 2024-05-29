@@ -8,6 +8,8 @@ import { UserList, UserListAutorities } from "@/lib/interface";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Footer from "@/components/Footer";
+import { Suspense } from "react";
+import Loading from "./loading";
 
 export default async function UserManagement() {
     const token: string = cookies().get('token')?.value!;
@@ -22,15 +24,17 @@ export default async function UserManagement() {
             <Scrollable>
                 <Main>
                     <h2 className="my-4 text-3xl font-bold max-w-screen-md mx-auto">Lista de Membros</h2>
-                    <ul className="mt-6 max-w-screen-md mx-auto">
-                        {
-                            userList.map((member, index) => {
-                                return (
-                                    <AdminListItem key={index} member={member} token={token} />
-                                )
-                            })
-                        }
-                    </ul>
+                    <Suspense fallback={<Loading />}>
+                        <ul className="mt-6 max-w-screen-md mx-auto">
+                            {
+                                userList.map((member, index) => {
+                                    return (
+                                        <AdminListItem key={index} member={member} token={token} />
+                                    )
+                                })
+                            }
+                        </ul>
+                    </Suspense>
                 </Main>
             </Scrollable>
             <Footer />

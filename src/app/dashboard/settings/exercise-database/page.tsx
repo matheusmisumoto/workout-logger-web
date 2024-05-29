@@ -22,7 +22,7 @@ export default async function ExerciseDatabase() {
             <Header navigationTitle="Perfil" />
             <Scrollable>
                 <Main>
-                    <h2 className="my-4 text-3xl font-bold max-w-screen-md mx-auto">Lista de exercícios</h2>
+                    <h2 className="my-4 text-3xl font-bold max-w-screen-md mx-auto">Lista de Exercícios</h2>
                         <NewExerciseForm token={token} />
                     <ul className="mt-6 max-w-screen-md mx-auto">
                         {

@@ -18,6 +18,7 @@ import { getUser } from "@/lib/auth"
 import { cookies } from "next/headers"
 import { deleteWorkout } from "@/lib/actions"
 import Footer from "@/components/Footer";
+import Loading from "./loading";
 
 export default async function Workout({ params }: { params: { workoutid: string } }){
     const token: string = cookies().get('token')?.value!;
@@ -41,11 +42,7 @@ export default async function Workout({ params }: { params: { workoutid: string 
         <>
             <Header navigationTitle="Voltar" />
             <Scrollable>
-                <Suspense fallback={
-                    <div className="flex flex-col justify-center items-center h-full">
-                        <p className="text-center text-white/25 align-middle">Carregando</p>
-                    </div>
-                }>
+                <Suspense fallback={<Loading />}>
                     <Hero>
                         {
                             workoutView?.name ?

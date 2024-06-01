@@ -8,7 +8,7 @@ import Main from "@/components/Main";
 import { apiWithAuth } from "@/lib/api";
 import { User, LastWorkouts } from "../../../lib/interface";
 import dictionary from "@/dictionaries/pt-BR.json";
-import { formatDate } from "@/lib/util";
+import { formatDate, formatTotalLifted } from "@/lib/util";
 import { getUser } from "@/lib/auth";
 import { cookies } from "next/headers";
 import { Suspense } from "react";
@@ -38,7 +38,7 @@ export default async function Dashboard() {
                     </h1>
                     <Box>
                         <BoxItem data={user.totalWorkouts} description="treinos registrados" />
-                        <BoxItem data={user.totalLifted + ' kg'} description="carga total levantada" />
+                        <BoxItem data={formatTotalLifted(user.totalLifted) + ' kg'} description="carga total levantada" />
                     </Box>
                 </Hero>
                 <Main>

@@ -7,6 +7,8 @@ import Loading from './loading';
 
 export default async function Login() {
     const wakeUpApi = await api.get('/hello');
+    const response = wakeUpApi.data;
+    console.log(response);
   
     return (
         <Suspense fallback={<Loading />} >

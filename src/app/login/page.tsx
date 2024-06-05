@@ -8,10 +8,10 @@ import Loading from './loading';
 export default async function Login() {
     const wakeUpApi = await api.get('/hello');
     const response = wakeUpApi.data;
-    console.log(response);
   
     return (
         <Suspense fallback={<Loading />} >
+            { response && console.log(response) }
             <main className="flex flex-col items-center justify-center min-h-full relative bg-brand gap-y-12 px-6 py-12 overflow-hidden login">
                     <Image src={bgLogo} alt="Workout Logger" fill className="object-cover absolute top-0 left-0 object-center opacity-20" />
                 <div className="flex-1 flex flex-col items-center justify-center z-10">

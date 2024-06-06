@@ -4,20 +4,24 @@ import bgLogo from '/public/bgLogin.webp'
 import { api } from '@/lib/api';
 import { Suspense } from 'react';
 import Loading from './loading';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 export default async function Login() {
+    if(cookies().has('token')) redirect('/dashboard');
+    
     const wakeUpApi = await api.get('hello');
-    const response = wakeUpApi.data;
+    const response: String = wakeUpApi.data;
   
     return (
-        <Suspense fallback={<Loading />} >
-            { response && <div className="hidden">${response}</div> }
-            <main className="flex flex-col items-center justify-center min-h-full relative bg-brand gap-y-12 px-6 py-12 overflow-hidden login">
-                    <Image src={bgLogo} alt="Workout Logger" fill className="object-cover absolute top-0 left-0 object-center opacity-20" />
-                <div className="flex-1 flex flex-col items-center justify-center z-10">
-                    <Logo fill="white" className="w-2/3 h-auto" />
-                </div>
-                <div className="w-full flex flex-col items-center">
+        <main className="flex flex-col items-center justify-center min-h-full relative bg-brand gap-y-12 px-6 py-12 overflow-hidden login">
+                <Image src={bgLogo} alt="Workout Logger" fill className="object-cover absolute top-0 left-0 object-center opacity-20" />
+            <div className="flex-1 flex flex-col items-center justify-center z-10">
+                <Logo fill="white" className="w-2/3 h-auto" />
+            </div>
+            <div className="w-full flex flex-col items-center">
+                <Suspense fallback={<Loading />} >
+                    <div className="hidden">{response}</div> 
                     <a href={`https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}`}
                         className="w-full text-[white] bg-black font-bold rounded-lg text-sm px-6 py-3 text-center me-2 mb-2 max-w-screen-lg z-10">
                         <svg className="w-4 h-4 me-2 inline-block align-text-top" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -28,8 +32,8 @@ export default async function Login() {
                     <a href="/api/auth/login" className="w-full text-white rounded-lg text-sm px-6 py-3 text-center max-w-screen-lg z-10">
                         Ou use uma conta de demonstração
                     </a>
-                </div>
-            </main>
-        </Suspense>
+                </Suspense>
+            </div>
+        </main>
     )
   }

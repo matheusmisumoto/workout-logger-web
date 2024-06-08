@@ -12,6 +12,7 @@ export default async function Login() {
     
     const wakeUpApi = await api.get('hello');
     const response: String = wakeUpApi.data;
+    console.log(response);
   
     return (
         <main className="flex flex-col items-center justify-center min-h-full relative bg-brand gap-y-12 px-6 py-12 overflow-hidden login">
@@ -21,7 +22,6 @@ export default async function Login() {
             </div>
             <div className="w-full flex flex-col items-center">
                 <Suspense fallback={<Loading />} >
-                    <div className="hidden">{response}</div> 
                     <a href={`https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}`}
                         className="w-full text-[white] bg-black font-bold rounded-lg text-sm px-6 py-3 text-center me-2 mb-2 max-w-screen-lg z-10">
                         <svg className="w-4 h-4 me-2 inline-block align-text-top" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">

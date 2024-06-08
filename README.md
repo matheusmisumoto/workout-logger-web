@@ -47,3 +47,7 @@ bun dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to navigate on FitLog web app.
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+
+
+---
+Developed with ☕ by [Matheus Misumoto](https://matheusmisumoto.dev) in Santos, Brazil

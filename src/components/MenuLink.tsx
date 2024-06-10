@@ -1,6 +1,5 @@
 import Link from "next/link"
 import FowardIcon from "./icons/ForwardIcon"
-import link from "next/link"
 
 export default function MenuLink(props: { link: string, title?: string, subtitle?: string, disabled?: boolean }){
     let target;

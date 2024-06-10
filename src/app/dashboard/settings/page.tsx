@@ -52,10 +52,9 @@ export default async function SettingsPage() {
                     <MenuCard>
                         <MenuLink link="https://github.com/matheusmisumoto/workout-logger-web" title="Repositório da aplicação no GitHub" />
                         <MenuLink link="https://github.com/matheusmisumoto/workout-logger-api" title="Repositório da API no GitHub" />
-                        <MenuLink link="https://matheusmisumoto.dev" title="Visite meu site" />
+                        <MenuLink link="https://matheusmisumoto.dev" title="Portfolio de Matheus Misumoto" />
                     </MenuCard>
                     <p className="max-w-screen-md mx-auto text-center text-sm text-white/50">Versão { version }</p>
-                    <p className="max-w-screen-md mx-auto text-center text-sm text-white/50">Desenvolvido por Matheus Misumoto</p>
                 </Main>
                 <div className="px-6 mb-6">
                     <a href="/api/auth/logout" className="rounded-xl bg-white/5 text-destructive text-md text-center py-3 my-4 block w-full max-w-screen-md mx-auto">Sair</a>

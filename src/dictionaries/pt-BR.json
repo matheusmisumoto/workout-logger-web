@@ -41,6 +41,7 @@
         "DROP": "Drop",
         "NEGATIVE": "Negativo",
         "REST_PAUSE": "Rest-Pause",
-        "DEAD_STOP": "Dead Stop"
+        "DEAD_STOP": "Dead Stop",
+        "WARM_UP": "Aquecimento"
     }
 }

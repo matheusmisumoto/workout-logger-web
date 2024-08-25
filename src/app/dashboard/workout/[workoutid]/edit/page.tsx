@@ -22,7 +22,7 @@ export default function TrackWorkout({ params, template } : { params?: { workout
     const [modals, setModals] = useState<Modal>()
     const [exercises, setExercises] = useState<ExerciseData[]>([])
     const [previousStats, setPreviousStats] = useState<PreviousStats>()
-    
+
     useEffect(() => {
         apiWithAuth(token).get('exercises').then(response => {
             setExercises(response.data);
@@ -30,6 +30,12 @@ export default function TrackWorkout({ params, template } : { params?: { workout
             console.log(error);
         });
 
+        const initial: Workout = {
+            user: user?.sub!,
+            status: "IN_PROGRESS",
+            exercises: []
+        }
+            
         const workoutStorage = localStorage.getItem('workoutDraft');
 
         if(params?.workoutid) {
@@ -54,15 +60,13 @@ export default function TrackWorkout({ params, template } : { params?: { workout
             });
         } else if(workoutStorage && workoutStorage !== "undefined") {
             const workoutStorageParsed: Workout = JSON.parse(workoutStorage!);
-            if(workoutStorageParsed.status === "IN_PROGRESS") {
+
+            if(workoutStorageParsed.status === "IN_PROGRESS" && workoutStorageParsed.user == user.sub) {
                 setWorkout(JSON.parse(workoutStorage));
+            } else {
+                setWorkout(initial);
             }
         } else {
-            const initial: Workout = {
-                user: user?.sub!,
-                status: "IN_PROGRESS",
-                exercises: []
-            }
             setWorkout(initial);
         }
         
@@ -70,9 +74,7 @@ export default function TrackWorkout({ params, template } : { params?: { workout
 
     useEffect(() => {
         if(workout) {
-            if(!params?.workoutid){
-                localStorage.setItem('workoutDraft', JSON.stringify(workout));
-            }
+            localStorage.setItem('workoutDraft', JSON.stringify(workout));
         }
     }, [workout, params?.workoutid]);
 
@@ -244,8 +246,8 @@ export default function TrackWorkout({ params, template } : { params?: { workout
                             </table>
                             <div className="text-xs mt-4 mb-2 py-3 px-2 rounded-md bg-white/20 block text-center" onClick={(e) => addSet(indexExercise)}>Adicionar set</div>
                             <div className="flex justify-between gap-2 text-center">
-                                <div className="flex-1 text-xs py-3 px-2 rounded-md bg-white/20" onClick={(e) => { getPreviousStats(workout.user, exercise.id, 'previousSets') }}>Estatísticas anteriores</div>
-                                <div className="flex-1 text-xs py-3 px-2 rounded-md bg-white/20" onClick={(e) => { getPreviousStats(workout.user, exercise.id, '1RM') }}>One Rep Max</div>
+                                <div className="flex-1 text-xs py-3 px-2 rounded-md bg-white/20" onClick={(e) => { getPreviousStats(user.sub, exercise.id, 'previousSets') }}>Estatísticas anteriores</div>
+                                <div className="flex-1 text-xs py-3 px-2 rounded-md bg-white/20" onClick={(e) => { getPreviousStats(user.sub, exercise.id, '1RM') }}>One Rep Max</div>
                             </div>
                         </div>
                     )

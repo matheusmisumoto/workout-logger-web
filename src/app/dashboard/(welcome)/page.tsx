@@ -6,7 +6,7 @@ import Hero from "@/components/Hero";
 import Scrollable from "@/components/Scrollable";
 import Main from "@/components/Main";
 import { apiWithAuth } from "@/lib/api";
-import { User, LastWorkouts } from "../../../lib/interface";
+import { User, LastWorkouts } from "@/lib/interface";
 import dictionary from "@/dictionaries/pt-BR.json";
 import { formatDate, formatTotalLifted } from "@/lib/util";
 import { getUser } from "@/lib/auth";

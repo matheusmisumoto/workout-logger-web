@@ -13,7 +13,7 @@ import Footer from "@/components/Footer";
 import Loading from "./loading";
 
 export default async function WorkoutHistoryPage(props: any) {
-    const token: string = cookies().get('token')?.value!;
+    const token: string = (await cookies()).get('token')?.value!;
 
     const fetchWorkoutHistory = await apiWithAuth(token).get('workouts/user/' + getUser(token).sub + '/all');
     const workoutHistory: LastWorkouts[] = fetchWorkoutHistory.data;

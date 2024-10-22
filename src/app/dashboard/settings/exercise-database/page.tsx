@@ -11,7 +11,7 @@ import { redirect } from "next/navigation";
 import Footer from "@/components/Footer";
 
 export default async function ExerciseDatabase() {
-    const token: string = cookies().get('token')?.value!;
+    const token: string = (await cookies()).get('token')?.value!;
     if(getUser(token).roles !== 'ROLE_ADMIN') redirect('/');
 
     const getExercises = await apiWithAuth(token).get('/exercises');

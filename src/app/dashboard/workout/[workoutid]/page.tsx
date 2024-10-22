@@ -20,11 +20,13 @@ import { deleteWorkout } from "@/lib/actions"
 import Footer from "@/components/Footer";
 import Loading from "./loading";
 
-export default async function Workout({ params }: { params: { workoutid: string } }){
-    const token: string = cookies().get('token')?.value!;
+export default async function Workout({ params }: { params: Promise <{ workoutid: string }> }){
+    const token: string = (await cookies()).get('token')?.value!;
 
-    const fetchWorkout = await apiWithAuth(token).get('workouts/user/' + getUser(token).sub + '/' + params.workoutid);
-    const workoutView: Workout = fetchWorkout.data;
+    const workoutid = (await params).workoutid;
+
+    const fetchWorkout = await apiWithAuth(token).get('workouts/user/' + getUser(token).sub + '/' + workoutid);
+    const workoutView: Workout = await fetchWorkout.data;
 
     const listMuscles = (exercises: Exercise[]) => {
         let muscles: string[] = [];

@@ -8,7 +8,7 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 export default async function Login() {
-    if(cookies().has('token')) redirect('/dashboard');
+    if((await cookies()).has('token')) redirect('/dashboard');
     
     const wakeUpApi = await api.get('hello');
     const response: String = wakeUpApi.data;

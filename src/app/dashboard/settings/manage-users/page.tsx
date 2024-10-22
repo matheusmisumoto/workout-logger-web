@@ -12,7 +12,7 @@ import { Suspense } from "react";
 import Loading from "./loading";
 
 export default async function UserManagement() {
-    const token: string = cookies().get('token')?.value!;
+    const token: string = (await cookies()).get('token')?.value!;
     if(getUser(token).roles !== 'ROLE_ADMIN') redirect('/');
 
     const fetchUserList = await apiWithAuth(token).get('/users');

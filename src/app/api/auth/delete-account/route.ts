@@ -7,7 +7,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest) {
 
-    const token = cookies().get('token')?.value;
+    const token = (await cookies()).get('token')?.value;
     if(!token) redirect('/');
     const profile: UserToken = jwtDecode(token);
 

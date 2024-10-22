@@ -16,7 +16,7 @@ import Footer from "@/components/Footer";
 import Loading from "./loading";
 
 export default async function Dashboard() {
-    const token: string = cookies().get('token')?.value!;
+    const token: string = (await cookies()).get('token')?.value!;
     
     const fetchUser = await apiWithAuth(token).get('users/' + getUser(token)?.sub );
     const user: User = fetchUser.data;

@@ -8,7 +8,7 @@ import Header from "@/components/Header"
 import Scrollable from "@/components/Scrollable"
 import Main from "@/components/Main"
 import RemoveIcon from "@/components/icons/RemoveIcon"
-import { useState, useEffect, Fragment, ChangeEvent } from "react"
+import { useState, useEffect, Fragment, ChangeEvent, use } from "react"
 import dictionary from "@/dictionaries/pt-BR.json";
 import { calculate1RM, formatDate } from "@/lib/util"
 import { jwtDecode } from "jwt-decode"

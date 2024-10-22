@@ -13,7 +13,7 @@ import { redirect } from "next/navigation";
 
 export default async function SettingsPage() {
     
-    const token = cookies().get('token')?.value;
+    const token = (await cookies()).get('token')?.value;
     if(!token) redirect('/');
     const profile: UserToken = jwtDecode(token);
 

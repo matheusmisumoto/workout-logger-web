@@ -7,8 +7,8 @@ import { cookies } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-export default function DeleteAccountPage() {
-    const token = cookies().get('token')?.value!;
+export default async function DeleteAccountPage() {
+    const token = (await cookies()).get('token')?.value!;
 
     const profile = getUser(token);
     if(profile.roles == "ROLE_DEMO") redirect('/')

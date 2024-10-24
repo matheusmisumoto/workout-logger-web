@@ -8,15 +8,18 @@ import Header from "@/components/Header"
 import Scrollable from "@/components/Scrollable"
 import Main from "@/components/Main"
 import RemoveIcon from "@/components/icons/RemoveIcon"
-import { useState, useEffect, Fragment, ChangeEvent, use } from "react"
+import { useState, useEffect, Fragment, ChangeEvent } from "react"
 import dictionary from "@/dictionaries/pt-BR.json";
 import { calculate1RM, formatDate } from "@/lib/util"
 import { jwtDecode } from "jwt-decode"
+import { useParams } from "next/navigation"
 
-export default function TrackWorkout({ params, template } : { params?: { workoutid: string }, template? : boolean }){
-
+export default function TrackWorkout({ template } : { template? : boolean }){
+    'use client'
+    
     const token = document.cookie.split("; ").find((row) => row.startsWith("token="))?.split("=")[1];
     const user: UserToken = jwtDecode(token!);
+    const params = useParams<{ workoutid: string }>()
 
     const [workout, setWorkout] = useState<Workout>()
     const [modals, setModals] = useState<Modal>()

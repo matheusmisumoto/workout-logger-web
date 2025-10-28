@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import { Logo } from "@/components/icons/Logo"
-import bgLogo from '/public/bgLogin.webp'
+import bgLogo from '@/../public/bgLogin.webp'
 import { api } from '@/lib/api';
 import { Suspense } from 'react';
 import Loading from './loading';

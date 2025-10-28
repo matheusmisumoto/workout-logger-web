@@ -17,7 +17,7 @@ export default async function SettingsPage() {
     if(!token) redirect('/');
     const profile: UserToken = jwtDecode(token);
 
-    const { version } = require('/package.json');
+    const { version } = require('../../../../package.json');
 
     return (
         <>

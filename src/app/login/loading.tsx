@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import { Logo } from "@/components/icons/Logo"
-import bgLogo from '/public/bgLogin.webp'
+import bgLogo from '@/../public/bgLogin.webp'
 
 export default function Loading() {
     return (

@@ -11,5 +11,5 @@ export default function Button(props: { link?:string, title: string, destructive
         style = "bg-secondary text-white/90 text-white/90"
     }
     
-    return(<Link href={props.link!} className={`rounded-xl ${style} text-md text-center py-3 my-4 block w-full max-w-screen-md mx-auto`} onClick={props.action}>{props.title}</Link>)
+    return(<Link href={props.link!} className={`rounded-xl ${style} text-md text-center py-3 my-4 block w-full max-w-(--breakpoint-md) mx-auto`} onClick={props.action}>{props.title}</Link>)
 }

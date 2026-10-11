@@ -10,8 +10,8 @@ export default function Loading() {
             <Header navigationTitle="Perfil" />
             <Scrollable>
                 <Main>
-                    <h2 className="my-4 text-3xl font-bold max-w-screen-md mx-auto">Lista de Membros</h2>
-                    <ul className="mt-6 max-w-screen-md mx-auto">
+                    <h2 className="my-4 text-3xl font-bold max-w-(--breakpoint-md) mx-auto">Lista de Membros</h2>
+                    <ul className="mt-6 max-w-(--breakpoint-md) mx-auto">
                         <AdminListItem loading />
                         <AdminListItem loading />
                         <AdminListItem loading />

@@ -23,9 +23,9 @@ export default async function UserManagement() {
             <Header navigationTitle="Perfil" />
             <Scrollable>
                 <Main>
-                    <h2 className="my-4 text-3xl font-bold max-w-screen-md mx-auto">Lista de Membros</h2>
+                    <h2 className="my-4 text-3xl font-bold max-w-(--breakpoint-md) mx-auto">Lista de Membros</h2>
                     <Suspense fallback={<Loading />}>
-                        <ul className="mt-6 max-w-screen-md mx-auto">
+                        <ul className="mt-6 max-w-(--breakpoint-md) mx-auto">
                             {
                                 userList.map((member, index) => {
                                     return (

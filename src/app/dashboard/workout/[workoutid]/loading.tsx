@@ -12,7 +12,7 @@ export default function Loading() {
             <Header navigationTitle="Voltar" />
             <Scrollable>
                 <Hero>
-                    <div className="max-w-screen-md mx-auto">
+                    <div className="max-w-(--breakpoint-md) mx-auto">
                         <div className="h-6 my-1 bg-white/20 rounded-full w-6/12"></div>
                         <div className="h-4 mt-2 bg-white/20 rounded-full w-3/12"></div>
                         <div className="h-4 mt-6 bg-white/20 rounded-full w-3/12"></div>
@@ -24,7 +24,7 @@ export default function Loading() {
                     </Box>
                 </Hero>
                 <Main>
-                    <div className="max-w-screen-md mx-auto pb-8 mb-8 border-b last:border-0 border-white/50 animate-pulse">
+                    <div className="max-w-(--breakpoint-md) mx-auto pb-8 mb-8 border-b last:border-0 border-white/50 animate-pulse">
                         <div className="mb-6">
                             <div className="h-5 my-2 bg-white/20 rounded-full w-6/12"></div>
                             <div className="h-3 mt-2 bg-white/20 rounded-full w-3/12"></div>

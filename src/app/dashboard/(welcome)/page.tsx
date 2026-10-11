@@ -28,7 +28,7 @@ export default async function Dashboard() {
             <Header />
             <Scrollable>
                 <Hero>
-                    <h1 className="text-3xl text-white max-w-screen-md mx-auto">
+                    <h1 className="text-3xl text-white max-w-(--breakpoint-md) mx-auto">
                         Let&apos;s go, 
                         <span className="block">
                             <strong className="font-bold text-4xl">
@@ -42,7 +42,7 @@ export default async function Dashboard() {
                     </Box>
                 </Hero>
                 <Main>
-                    <h2 className="mb-3 text-2xl font-bold max-w-screen-md mx-auto">Últimos treinos</h2>
+                    <h2 className="mb-3 text-2xl font-bold max-w-(--breakpoint-md) mx-auto">Últimos treinos</h2>
                         {
                             lastWorkouts.length > 0 ?
                                 lastWorkouts.map((workout: LastWorkouts) => {
@@ -62,7 +62,7 @@ export default async function Dashboard() {
                                     )
                                 })
                             :
-                            <p className="text-sm mt-4 text-white/25 max-w-screen-md mx-auto">Você não possui treinos registrados.</p>
+                            <p className="text-sm mt-4 text-white/25 max-w-(--breakpoint-md) mx-auto">Você não possui treinos registrados.</p>
                         }
                 </Main>
             </Scrollable>

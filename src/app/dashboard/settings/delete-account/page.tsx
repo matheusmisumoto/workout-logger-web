@@ -25,8 +25,8 @@ export default async function DeleteAccountPage() {
                     </div>
                 </Main>
                 <div className="px-6 mb-6">
-                    <a href="/api/auth/delete-account" className="rounded-xl bg-white/5 text-destructive text-md font-bold text-center py-3 mt-4 mb-2 block w-full max-w-screen-md mx-auto">Excluir conta</a>
-                    <Link href="/dashboard/settings" className="rounded-xl text-center py-3 block w-full max-w-screen-md mx-auto">Agora não</Link>
+                    <a href="/api/auth/delete-account" className="rounded-xl bg-white/5 text-destructive text-md font-bold text-center py-3 mt-4 mb-2 block w-full max-w-(--breakpoint-md) mx-auto">Excluir conta</a>
+                    <Link href="/dashboard/settings" className="rounded-xl text-center py-3 block w-full max-w-(--breakpoint-md) mx-auto">Agora não</Link>
                 </div>
             </Scrollable>
             <Footer />

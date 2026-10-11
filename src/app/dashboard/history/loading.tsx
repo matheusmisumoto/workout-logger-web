@@ -15,7 +15,7 @@ export default function Loading(props: any) {
             }
             <Scrollable>
                 <Main>
-                    <h2 className="my-4 text-3xl font-bold max-w-screen-md mx-auto">Histórico de treinos</h2>
+                    <h2 className="my-4 text-3xl font-bold max-w-(--breakpoint-md) mx-auto">Histórico de treinos</h2>
                     <Card loading />
                     <Card loading />
                     <Card loading />

@@ -13,7 +13,7 @@ export default function NewWorkout() {
             <Header />
             <Scrollable>
                 <Main>
-                    <h2 className="my-4 text-3xl font-bold max-w-screen-md mx-auto">Novo Treino</h2>
+                    <h2 className="my-4 text-3xl font-bold max-w-(--breakpoint-md) mx-auto">Novo Treino</h2>
                     <MenuCard>
                         <StartWorkout />
                         <MenuLink link="/dashboard/workout/new/from-history" title="Usar treino anterior" subtitle="Use um treino do seu histórico" />

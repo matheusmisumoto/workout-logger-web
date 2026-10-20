@@ -5,7 +5,7 @@ import { calculate1RM } from "@/lib/util";
 
 export default function WorkoutExercise(props: { exercise: string, target: string, equipment: string, sets: Sets[] }){
     return(
-        <div className="max-w-screen-md mx-auto pb-8 mb-8 border-b last:border-0 border-white/50">
+        <div className="max-w-(--breakpoint-md) mx-auto pb-8 mb-8 border-b last:border-0 border-white/50">
             <ExerciseHeader exercise={props.exercise} target={props.target} equipment={props.equipment} />
             <table className="w-full text-sm">
                 <tbody>

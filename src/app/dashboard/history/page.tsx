@@ -29,7 +29,7 @@ export default async function WorkoutHistoryPage(props: any) {
             <Scrollable>
                 <Main>
                     <Suspense fallback={<Loading />}>
-                        <h2 className="my-4 text-3xl font-bold max-w-screen-md mx-auto">Histórico de treinos</h2>
+                        <h2 className="my-4 text-3xl font-bold max-w-(--breakpoint-md) mx-auto">Histórico de treinos</h2>
                         {
                             workoutHistory.length > 0 ?
                                 workoutHistory.map((workout: LastWorkouts) => {
@@ -55,7 +55,7 @@ export default async function WorkoutHistoryPage(props: any) {
                                     )
                                 })
                             : 
-                            <p className="text-sm mt-4 text-white/25 max-w-screen-md mx-auto">Você não possui treinos registrados.</p>
+                            <p className="text-sm mt-4 text-white/25 max-w-(--breakpoint-md) mx-auto">Você não possui treinos registrados.</p>
                         }
                     </Suspense>
                 </Main>

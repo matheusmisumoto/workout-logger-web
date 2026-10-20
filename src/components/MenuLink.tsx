@@ -10,7 +10,7 @@ export default function MenuLink(props: { link: string, title?: string, subtitle
     }
 
     return(
-        <Link href={props.link!} target={target} className={`px-4 py-3 max-w-screen-md text-white/90 flex gap-2 justify-center items-center` + disabledStyle }>
+        <Link href={props.link!} target={target} className={`px-4 py-3 max-w-(--breakpoint-md) text-white/90 flex gap-2 justify-center items-center` + disabledStyle }>
             <div className="flex-1">
                 {props.title}
                 { props.subtitle ? <span className="block text-xs text-white/50">{props.subtitle}</span> : ''}

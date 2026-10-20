@@ -11,7 +11,7 @@ export default function Header(props: { navigationTitle?: string, actionTitle?: 
     
     return (
         <header className="px-1 h-12 bg-brand text-white">
-            <div className="flex justify-between max-w-screen-md mx-auto gap-8">
+            <div className="flex justify-between max-w-(--breakpoint-md) mx-auto gap-8">
                 <div className="flex flex-1 flex-col justify-center h-12">
                 { props.navigationTitle ?
                     <div>

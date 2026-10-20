@@ -49,13 +49,13 @@ export default async function Workout({ params }: { params: Promise <{ workoutid
                         {
                             workoutView?.name ?
                                 <>
-                                    <h2 className="mt-0 text-2xl font-bold max-w-screen-md mx-auto">{workoutView?.name}</h2>
-                                    <p className="text-[.875rem] mb-4 font-bold max-w-screen-md mx-auto">{formatDate(workoutView?.date!, true)}</p>
+                                    <h2 className="mt-0 text-2xl font-bold max-w-(--breakpoint-md) mx-auto">{workoutView?.name}</h2>
+                                    <p className="text-[.875rem] mb-4 font-bold max-w-(--breakpoint-md) mx-auto">{formatDate(workoutView?.date!, true)}</p>
                                 </>
                             :
-                                <h2 className="mt-0 mb-2 text-2xl font-bold max-w-screen-md mx-auto">{formatDate(workoutView?.date!, true)}</h2>
+                                <h2 className="mt-0 mb-2 text-2xl font-bold max-w-(--breakpoint-md) mx-auto">{formatDate(workoutView?.date!, true)}</h2>
                         }
-                        <p className="text-[.875rem] max-w-screen-md mx-auto">{listMuscles(workoutView?.exercises!)}</p>
+                        <p className="text-[.875rem] max-w-(--breakpoint-md) mx-auto">{listMuscles(workoutView?.exercises!)}</p>
                         <Box>
                             <BoxItem data={workoutView?.exercises.length} description="exercícios" />
                             <BoxItem data={workoutView?.duration} description="minutos" />
@@ -81,14 +81,14 @@ export default async function Workout({ params }: { params: Promise <{ workoutid
                         }
                         {
                             workoutView?.comment &&
-                            <div className="max-w-screen-md mx-auto mb-8">
+                            <div className="max-w-(--breakpoint-md) mx-auto mb-8">
                                 <h3 className="text-lg font-bold mb-2">Observações</h3>
-                                <p className="text-sm max-w-screen-md mx-auto">{workoutView?.comment}</p>
+                                <p className="text-sm max-w-(--breakpoint-md) mx-auto">{workoutView?.comment}</p>
                             </div>
                         }                    
                         <Button link={'/dashboard/workout/' + workoutView.id + '/edit'} title="Editar treino" />
                         <form action={deleteWorkout.bind(null, workoutView.id!, token)}>
-                            <button className="rounded-xl bg-white/5 text-destructive text-md text-center py-3 my-4 block w-full max-w-screen-md mx-auto" id={workoutView.id!}>Remover treino</button>
+                            <button className="rounded-xl bg-white/5 text-destructive text-md text-center py-3 my-4 block w-full max-w-(--breakpoint-md) mx-auto" id={workoutView.id!}>Remover treino</button>
                         </form>
                     </Main>
                 </Suspense>

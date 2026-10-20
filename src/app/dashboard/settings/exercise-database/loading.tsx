@@ -10,9 +10,9 @@ export default function Loading() {
             <Header navigationTitle="Perfil" />
             <Scrollable>
                 <Main>
-                    <h2 className="my-4 text-3xl font-bold max-w-screen-md mx-auto">Lista de Exercícios</h2>
-                    <div className="flex flex-col max-w-screen-md h-64 mx-auto bg-white/10 rounded-lg animate-pulse"></div>
-                    <ul className="mt-6 max-w-screen-md mx-auto">
+                    <h2 className="my-4 text-3xl font-bold max-w-(--breakpoint-md) mx-auto">Lista de Exercícios</h2>
+                    <div className="flex flex-col max-w-(--breakpoint-md) h-64 mx-auto bg-white/10 rounded-lg animate-pulse"></div>
+                    <ul className="mt-6 max-w-(--breakpoint-md) mx-auto">
                         <AdminListItem loading />
                         <AdminListItem loading />
                         <AdminListItem loading />

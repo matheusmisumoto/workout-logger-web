@@ -13,7 +13,7 @@ export default function Loading() {
             <Header />
             <Scrollable>
                 <Hero>
-                    <h1 className="text-3xl text-white max-w-screen-md mx-auto">
+                    <h1 className="text-3xl text-white max-w-(--breakpoint-md) mx-auto">
                         Let&apos;s go, 
                         <span className="block">
                             <div className="h-8 w-4/6 mt-2 bg-white/25 rounded-3xl animate-pulse inline-block align-text-top"></div>
@@ -25,7 +25,7 @@ export default function Loading() {
                     </Box>
                 </Hero>
                 <Main>
-                    <h2 className="mb-3 text-2xl font-bold max-w-screen-md mx-auto">Últimos treinos</h2>
+                    <h2 className="mb-3 text-2xl font-bold max-w-(--breakpoint-md) mx-auto">Últimos treinos</h2>
                     <Card loading />
                     <Card loading />
                 </Main>

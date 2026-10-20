@@ -12,7 +12,7 @@ export default function newExerciseForm({ token }: { token: string }) {
             await addExercise(formData, token)
             ref.current?.reset()
         }}>
-            <div className="flex flex-col p-4 pb-0 max-w-screen-md mx-auto bg-white/10 rounded-lg">
+            <div className="flex flex-col p-4 pb-0 max-w-(--breakpoint-md) mx-auto bg-white/10 rounded-lg">
                 <input type="text" className="bg-transparent bg-black rounded-md mb-3 p-3 text-white text-sm" placeholder="Novo exercício" name="name"/>
                 <select className="bg-black rounded-md mb-3 p-3 text-white text-sm" name="target" defaultValue="">
                     <option value="" hidden disabled>Selecione um músculo</option>
@@ -34,7 +34,7 @@ export default function newExerciseForm({ token }: { token: string }) {
                             })
                     }
                 </select>
-                <button className="rounded-xl text-md text-center py-3 my-4 block w-full max-w-screen-md mx-auto bg-primary text-white/90 font-bold">Adicionar Exercício</button>
+                <button className="rounded-xl text-md text-center py-3 my-4 block w-full max-w-(--breakpoint-md) mx-auto bg-primary text-white/90 font-bold">Adicionar Exercício</button>
             </div>
         </form>
     );

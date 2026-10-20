@@ -215,7 +215,7 @@ export default function TrackWorkout({ template } : { template? : boolean }){
                     let targetFormat = dictionary.muscles[exercise.target as keyof typeof dictionary.muscles]
                     let equipmentFormat = dictionary.equipment[exercise.equipment as keyof typeof dictionary.equipment]
                     return (
-                        <div key={indexExercise} className="max-w-screen-md mx-auto pb-8 mb-8 border-b border-white/50">
+                        <div key={indexExercise} className="max-w-(--breakpoint-md) mx-auto pb-8 mb-8 border-b border-white/50">
                             <ExerciseHeader exercise={exercise.name} target={targetFormat} equipment={equipmentFormat} />
                             <table className="w-full text-sm">
                                 <tbody>
@@ -262,7 +262,7 @@ export default function TrackWorkout({ template } : { template? : boolean }){
             <div className="modal-background absolute m-auto right-0 bottom-0 left-0 w-full h-full bg-black/80">
                 {
                 (modals.type == "addExercise") && 
-                <div className="modal absolute flex flex-col m-auto right-0 bottom-0 left-0 w-full max-w-screen-md mx-auto h-5/6 bg-secondary rounded-t-3xl">
+                <div className="modal absolute flex flex-col m-auto right-0 bottom-0 left-0 w-full max-w-(--breakpoint-md) mx-auto h-5/6 bg-secondary rounded-t-3xl">
                     <div className="flex">
                         <h2 className="text-2xl font-bold m-6 mb-2 flex-1">Selecionar exercício</h2>
                         <RemoveIcon className="m-6 mb-2 fill-white" onClick={() => closeModal()} />
@@ -286,7 +286,7 @@ export default function TrackWorkout({ template } : { template? : boolean }){
                 }
                 {
                 (modals.type == "previousSets") &&
-                <div className="modal absolute flex flex-col m-auto right-0 bottom-0 left-0 w-full max-w-screen-md mx-auto h-3/6 bg-secondary rounded-t-3xl">
+                <div className="modal absolute flex flex-col m-auto right-0 bottom-0 left-0 w-full max-w-(--breakpoint-md) mx-auto h-3/6 bg-secondary rounded-t-3xl">
                     <div className="flex">
                         <h2 className="text-2xl font-bold m-6 mb-2 flex-1">Estatísticas Anteriores</h2>
                         <RemoveIcon className="m-6 mb-2 fill-white" onClick={() => closeModal()} />
@@ -330,7 +330,7 @@ export default function TrackWorkout({ template } : { template? : boolean }){
                 }
                 {
                 (modals.type == "1RM") &&
-                <div className="modal absolute flex flex-col m-auto right-0 bottom-0 left-0 w-full max-w-screen-md mx-auto h-3/6 bg-secondary rounded-t-3xl">
+                <div className="modal absolute flex flex-col m-auto right-0 bottom-0 left-0 w-full max-w-(--breakpoint-md) mx-auto h-3/6 bg-secondary rounded-t-3xl">
                     <div className="flex">
                         <h2 className="text-2xl font-bold m-6 mb-2 flex-1">One Repetition Max</h2>
                         <RemoveIcon className="m-6 mb-2 fill-white" onClick={() => closeModal()} />
@@ -371,7 +371,7 @@ export default function TrackWorkout({ template } : { template? : boolean }){
                 }
                 {
                 (modals.type == "finishWorkout") && 
-                <div className="modal absolute flex flex-col m-auto right-0 bottom-0 left-0 w-full max-w-screen-md mx-auto h-3/6 bg-secondary rounded-t-3xl">
+                <div className="modal absolute flex flex-col m-auto right-0 bottom-0 left-0 w-full max-w-(--breakpoint-md) mx-auto h-3/6 bg-secondary rounded-t-3xl">
                     {
                         (workout && workout.exercises.length > 0
                             && workout?.exercises[0].sets[0].reps 

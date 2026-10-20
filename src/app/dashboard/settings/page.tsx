@@ -24,13 +24,13 @@ export default async function SettingsPage() {
             <Header />
             <Scrollable>
                 <Hero>
-                    <div className="flex max-w-screen-md mx-auto gap-4">
+                    <div className="flex max-w-(--breakpoint-md) mx-auto gap-4">
                         {
                             profile?.picture &&
                                 <Image src={ profile.picture } width={60} height={60} className="rounded-full" alt="Profile picture" />
                         }
                         <div className="flex-1 flex flex-col justify-center">
-                            <h2 className="mt-0 mb-1 text-xl font-bold max-w-screen-md">{ profile?.name }</h2>
+                            <h2 className="mt-0 mb-1 text-xl font-bold max-w-(--breakpoint-md)">{ profile?.name }</h2>
                             <p className="text-[.675rem]">ID: { profile?.sub }</p>
                         </div>
                     </div>
@@ -54,10 +54,10 @@ export default async function SettingsPage() {
                         <MenuLink link="https://github.com/matheusmisumoto/workout-logger-api" title="Repositório da API no GitHub" />
                         <MenuLink link="https://matheusmisumoto.dev" title="Portfolio de Matheus Misumoto" />
                     </MenuCard>
-                    <p className="max-w-screen-md mx-auto text-center text-sm text-white/50">Versão { version }</p>
+                    <p className="max-w-(--breakpoint-md) mx-auto text-center text-sm text-white/50">Versão { version }</p>
                 </Main>
                 <div className="px-6 mb-6">
-                    <a href="/api/auth/logout" className="rounded-xl bg-white/5 text-destructive text-md text-center py-3 my-4 block w-full max-w-screen-md mx-auto">Sair</a>
+                    <a href="/api/auth/logout" className="rounded-xl bg-white/5 text-destructive text-md text-center py-3 my-4 block w-full max-w-(--breakpoint-md) mx-auto">Sair</a>
                 </div>
             </Scrollable>
             <Footer />

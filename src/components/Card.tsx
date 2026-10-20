@@ -10,7 +10,7 @@ export default function Card(props: {link?: string, title?: string, subtitle?:st
 
     if(props.loading){
         return (
-            <div className="mt-2 mb-4 p-4 bg-card rounded-2xl max-w-screen-md mx-auto">
+            <div className="mt-2 mb-4 p-4 bg-card rounded-2xl max-w-(--breakpoint-md) mx-auto">
                 <div className="h-5 w-5/6 mt-1 block bg-white/25 rounded-full animate-pulse"></div>
                 <div className="h-3 w-2/4 mt-2 block bg-white/25 rounded-full animate-pulse"></div>
     
@@ -25,7 +25,7 @@ export default function Card(props: {link?: string, title?: string, subtitle?:st
 
     return (
         <Link href={props.link ? props.link : '#'}>
-            <div className="mt-2 mb-4 p-4 bg-card rounded-2xl max-w-screen-md mx-auto">
+            <div className="mt-2 mb-4 p-4 bg-card rounded-2xl max-w-(--breakpoint-md) mx-auto">
                 { props.title ? titleTag : '' }
                 { props.subtitle ? subtitleTag : '' }
 
